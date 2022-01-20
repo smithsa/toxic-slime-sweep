@@ -1,7 +1,7 @@
 import {CST} from "../constants";
 import BaseScene from "./BaseScene";
 import '../../scss/title.scss';
-import AlignGrid from "../utils/AlignGrid";
+import HTMLElementBuilder from "../utils/HTMLElementBuilder";
 
 export default class TitleScene extends BaseScene {
   constructor () {
@@ -11,11 +11,15 @@ export default class TitleScene extends BaseScene {
   }
 
   create () {
-    const titleElement = this.add.dom(this.game.config.width/2, this.game.config.height/2 - 200,
-      this.createHtmlElement("h1", CST.LANG.EN.TITLE));
+    const titleHtmlBuilder = new HTMLElementBuilder("h1", CST.LANG.EN.TITLE);
+    this.add.dom(this.game.config.width/2, this.game.config.height/2 - 200,
+      titleHtmlBuilder.element);
 
-    const playButtonElement = this.add.dom(this.game.config.width/2, this.game.config.height/2,
-      this.createHtmlElement("button", CST.LANG.EN.PLAY));
+    let playButtonHtmlBuilder = new HTMLElementBuilder("button", CST.LANG.EN.PLAY);
+    playButtonHtmlBuilder.addAriaAttributes({"aria-label": "Play"});
+
+    this.add.dom(this.game.config.width/2, this.game.config.height/2,
+      playButtonHtmlBuilder.element);
 
   }
 }
