@@ -5,6 +5,6 @@ export const CST = {
   },
   CONTENT : {
     TITLE: "Toxic Slime Sweep",
-    PLAY: "Play"
+    PLAY_BUTTON_TEXT: "Play"
   }
 }

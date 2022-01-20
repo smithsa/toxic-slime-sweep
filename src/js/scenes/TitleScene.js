@@ -15,7 +15,7 @@ export default class TitleScene extends Scene {
     this.add.dom(this.game.config.width/2, this.game.config.height/2 - 200,
       titleHtmlBuilder.element);
 
-    const playButtonHtmlBuilder = new HTMLElementBuilder("button", CST.CONTENT.TITLE);
+    const playButtonHtmlBuilder = new HTMLElementBuilder("button", CST.CONTENT.PLAY_BUTTON_TEXT);
     playButtonHtmlBuilder.addAriaAttributes({"aria-label": "play"});
 
     this.add.dom(this.game.config.width/2, this.game.config.height/2,
