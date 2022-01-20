@@ -12,7 +12,6 @@ module.exports = {
     // TODO copy all contents over to the dist
     new CopyPlugin({
        patterns: [
-        { from: "./src/css", to: "./css"},
         { from: "./src/fonts", to: "./fonts"},
         { from: "./src/img", to: "./img"},
         { from: "./src/sounds", to: "./sounds"},
@@ -29,6 +28,17 @@ module.exports = {
   },
   module: {
     rules: [
+        {
+          test: /\.s[ac]ss$/i,
+          use: [
+            // Creates `style` nodes from JS strings
+            "style-loader",
+            // Translates CSS into CommonJS
+            "css-loader",
+            // Compiles Sass to CSS
+            "sass-loader",
+          ],
+        },
       {
         test: /\.js$/,
         include: path.resolve(__dirname, 'dist/'),

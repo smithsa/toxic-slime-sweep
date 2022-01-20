@@ -1,15 +1,15 @@
 import {AUTO, Scale, Game} from 'phaser';
-import PreloaderScene from './preload';
-import MenuScene from './menu';
+import BootScene from './scenes/BootScene';
+import TitleScene from './scenes/TitleScene';
 import {CST} from "./constants";
 
 const gameConfig = {
-  gameTitle: CST.TITLE,
   type: AUTO,
-  width: 1024,
-  height: 610,
+  gameTitle: CST.LANG.EN.TITLE,
+  width: 1600,
+  height: 900,
   backgroundColor: '#fff',
-  parent: CST.SCENES.MENU,
+  parent: CST.SCENES.TITLE,
   dom: {
     createContainer: true
   },
@@ -17,7 +17,7 @@ const gameConfig = {
     mode: Scale.FIT,
     autoCenter: Scale.CENTER_BOTH
   },
-  scene: [PreloaderScene, MenuScene]
+  scene: [BootScene, TitleScene]
 };
 
 const game = new Game(gameConfig);

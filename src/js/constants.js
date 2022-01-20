@@ -1,7 +1,12 @@
 export const CST = {
-  TITLE: "Toxic Slime Sweep",
   SCENES: {
-    MENU: "MENU",
+    TITLE: "TITLE",
     PRELOAD: "PRELOAD"
+  },
+  LANG : {
+    EN: {
+      TITLE: "Toxic Slime Sweep",
+      PLAY: "Play"
+    }
   }
 }
