@@ -1,15 +1,15 @@
-import {AUTO, Scale, Game} from 'phaser';
+import {CANVAS, Scale, Game} from 'phaser';
 import BootScene from './scenes/BootScene';
 import TitleScene from './scenes/TitleScene';
 import {CST} from "./constants";
 
 const gameConfig = {
-  type: AUTO,
-  gameTitle: CST.LANG.EN.TITLE,
+  type: CANVAS,
+  gameTitle: CST.CONTENT.TITLE,
   width: 1600,
   height: 900,
   backgroundColor: '#fff',
-  parent: CST.SCENES.TITLE,
+  parent: "game-container",
   dom: {
     createContainer: true
   },

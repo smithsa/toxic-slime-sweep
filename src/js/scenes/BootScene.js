@@ -1,10 +1,10 @@
 import {CST} from "../constants";
-import BaseScene from "./BaseScene";
+import {Scene} from 'phaser';
 
-export default class BootScene extends BaseScene {
+export default class BootScene extends Scene {
   constructor () {
     super({
-      key: CST.SCENES.PRELOAD
+      key: CST.SCENES.BOOT
     });
   }
 

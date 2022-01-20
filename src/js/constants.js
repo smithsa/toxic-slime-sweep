@@ -1,12 +1,10 @@
 export const CST = {
   SCENES: {
+    BOOT: "BOOT",
     TITLE: "TITLE",
-    PRELOAD: "PRELOAD"
   },
-  LANG : {
-    EN: {
-      TITLE: "Toxic Slime Sweep",
-      PLAY: "Play"
-    }
+  CONTENT : {
+    TITLE: "Toxic Slime Sweep",
+    PLAY: "Play"
   }
 }
