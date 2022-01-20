@@ -13,7 +13,6 @@ export default class BootScene extends BaseScene {
   }
 
   create () {
-    console.log("preload")
     this.scene.start(CST.SCENES.TITLE);
   }
 }

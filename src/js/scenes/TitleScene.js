@@ -1,6 +1,7 @@
 import {CST} from "../constants";
 import BaseScene from "./BaseScene";
 import '../../scss/title.scss';
+import AlignGrid from "../utils/AlignGrid";
 
 export default class TitleScene extends BaseScene {
   constructor () {
@@ -10,10 +11,11 @@ export default class TitleScene extends BaseScene {
   }
 
   create () {
-    const titleElement = this.createHtmlElement("h1", CST.LANG.EN.TITLE);
-    this.add.dom(this.game.config.width/2, this.game.config.height/2 - 200, titleElement);
+    const titleElement = this.add.dom(this.game.config.width/2, this.game.config.height/2 - 200,
+      this.createHtmlElement("h1", CST.LANG.EN.TITLE));
 
-    const playButtonElement = this.createHtmlElement("button", CST.LANG.EN.PLAY);
-    this.add.dom(this.game.config.width/2, this.game.config.height/2, playButtonElement);
+    const playButtonElement = this.add.dom(this.game.config.width/2, this.game.config.height/2,
+      this.createHtmlElement("button", CST.LANG.EN.PLAY));
+
   }
 }
