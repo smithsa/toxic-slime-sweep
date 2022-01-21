@@ -1,3 +1,11 @@
 {
-  "title": ""
+  "audio_key": {
+    "cue" : [
+      "(glass breaks)",
+      "Yikes! There was an accident in Laboratory X!"
+    ]
+  },
+  "audio_key_2": {
+    "cue" : "(glass breaks)"
+  }
 }
