@@ -1,4 +1,4 @@
-export const CST = {
+export const CONST = {
   SCENES: {
     BOOT: "BOOT",
     TITLE: "TITLE",

@@ -1,10 +1,10 @@
-import {CST} from "../constants";
-import {Scene} from 'phaser';
+import {CONST} from "../constants";
+import BaseScene from "./BaseScene";
 
-export default class BootScene extends Scene {
+export default class BootScene extends BaseScene {
   constructor () {
     super({
-      key: CST.SCENES.BOOT
+      key: CONST.SCENES.BOOT
     });
   }
 
@@ -13,6 +13,6 @@ export default class BootScene extends Scene {
   }
 
   create () {
-    this.scene.start(CST.SCENES.TITLE);
+    this.scene.start(CONST.SCENES.TITLE);
   }
 }

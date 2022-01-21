@@ -1,11 +1,11 @@
 import {CANVAS, Scale, Game} from 'phaser';
 import BootScene from './scenes/BootScene';
 import TitleScene from './scenes/TitleScene';
-import {CST} from "./constants";
+import {CONST} from "./constants";
 
 const gameConfig = {
   type: CANVAS,
-  gameTitle: CST.CONTENT.TITLE,
+  gameTitle: CONST.CONTENT.TITLE,
   width: 1600,
   height: 900,
   backgroundColor: '#fff',

@@ -1,21 +1,21 @@
-import {CST} from "../constants";
-import {Scene} from "phaser";
-import '../../scss/title.scss';
+import {CONST} from "../constants";
 import HTMLElementBuilder from "../utils/HTMLElementBuilder";
+import BaseScene from "./BaseScene";
+import '../../scss/title.scss';
 
-export default class TitleScene extends Scene {
+export default class TitleScene extends BaseScene {
   constructor () {
     super({
-      key: CST.SCENES.TITLE
+      key: CONST.SCENES.TITLE
     });
   }
 
   create () {
-    const titleHtmlBuilder = new HTMLElementBuilder("h1", CST.CONTENT.TITLE);
+    const titleHtmlBuilder = new HTMLElementBuilder("h1", CONST.CONTENT.TITLE);
     this.add.dom(this.game.config.width/2, this.game.config.height/2 - 200,
       titleHtmlBuilder.element);
 
-    const playButtonHtmlBuilder = new HTMLElementBuilder("button", CST.CONTENT.PLAY_BUTTON_TEXT);
+    const playButtonHtmlBuilder = new HTMLElementBuilder("button", CONST.CONTENT.PLAY_BUTTON_TEXT);
     playButtonHtmlBuilder.addAriaAttributes({"aria-label": "play"});
 
     this.add.dom(this.game.config.width/2, this.game.config.height/2,
