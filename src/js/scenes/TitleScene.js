@@ -27,7 +27,7 @@ export default class TitleScene extends BaseScene {
       playButtonHtmlBuilder.element);
 
     playButtonHtmlBuilder.element.addEventListener("click", () => {
-      var music = this.sound.add('test');
+      const music = this.sound.add('test');
       this.playCaptionedSound(music);
     });
   }
