@@ -12,12 +12,14 @@ module.exports = {
     // TODO copy all contents over to the dist
     new CopyPlugin({
        patterns: [
-        { from: "./src/fonts", to: "./fonts", noErrorOnMissing: true},
-        { from: "./src/img", to: "./img"},
-        { from: "./src/sounds", to: "./sounds"},
-        { from: "./src/voice", to: "./voice"},
-        { from: "./src/music", to: "./music"},
-        { from: "./src/index.html", to: "./index.html" }
+        { from: "./src", to: "./",
+          globOptions: {
+            gitignore: true,
+            ignore: ["**.DS_Store.**", "**/js/**", "**/scss/**"],
+          },
+          noErrorOnMissing: true
+        },
+        { from: "./src/index.html", to: "./index.html" },
        ]
     }),
   ],

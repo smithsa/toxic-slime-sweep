@@ -15,15 +15,15 @@ function bundleJavascriptViaWebpack () {
 }
 gulp.task("bundleJavascriptViaWebpack", bundleJavascriptViaWebpack);
 
-function createAudioSprites(inputFile) {
+function createAudioSprites() {
   return new Promise(function(resolve, reject) {
     try {
+      const inputFile = './src/sounds';
       checkFileExists(inputFile).then((exists) => {
         if(exists) {
-          let outputPath = inputFile.replace('src', 'dist')
-          createAudioSpritesFiles(inputFile, `${outputPath}/audio_sprite`);
+          createAudioSpritesFiles(inputFile, './dist/sounds/sounds_audio_sprite');
         } else {
-          console.error(`${inputFile} does not exist`);
+          console.log(`${inputFile} does not exist`);
         }
       })
 
@@ -34,7 +34,8 @@ function createAudioSprites(inputFile) {
   });
 }
 
-gulp.task("createAudioSpritesSound", createAudioSprites('./src/sounds'));
+gulp.task("createAudioSprites", createAudioSprites);
+
 
 function createAudioSpritesFiles(sourcePath, outputPath) {
   let files = [];
@@ -63,4 +64,4 @@ function checkFileExists(file) {
     .catch(() => false)
 }
 
-gulp.task('default', gulp.series("bundleJavascriptViaWebpack", "createAudioSpritesSound", "createAudioSpritesVoice"));
+gulp.task('default', gulp.series("bundleJavascriptViaWebpack", "createAudioSprites"));

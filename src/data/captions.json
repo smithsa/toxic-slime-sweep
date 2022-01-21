@@ -1,11 +1,11 @@
 {
-  "audio_key": {
-    "cue" : [
-      "(glass breaks)",
-      "Yikes! There was an accident in Laboratory X!"
-    ]
-  },
-  "audio_key_2": {
-    "cue" : "(glass breaks)"
-  }
+  "key": "(glass breaks)",
+  "key1": "The slime is expanding quickly.",
+  "key2": [
+    "The slime is expanding quickly.",
+    "Solve the multiplication problems to clean-up the slime and save the laboratory!"
+  ]
 }
+
+
+

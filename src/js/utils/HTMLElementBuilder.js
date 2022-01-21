@@ -6,14 +6,14 @@ export default class HTMLElementBuilder {
     return this;
   }
 
-  addAriaAttributes(ariaAttributes = {}) {
-    if(!ariaAttributes || ariaAttributes.constructor !== Object) {
+  addAttributes(attributes = {}) {
+    if(!attributes || attributes.constructor !== Object) {
       return new Error("Parameter for addAriaAttributes should be an object. Example: {aria-label: \"Play\"");
     }
 
-    for (let ariaAttribute in ariaAttributes) {
-      let ariaAttributeValue = ariaAttributes[ariaAttribute];
-      this.element.setAttribute(ariaAttribute, ariaAttributeValue);
+    for (let attribute in attributes) {
+      let ariaAttributeValue = attributes[attribute];
+      this.element.setAttribute(attribute, ariaAttributeValue);
     }
 
     return this;
@@ -27,9 +27,11 @@ export default class HTMLElementBuilder {
     return this;
   }
 
-  appendHTMLObjects (...htmlObjects) {
-    htmlObjects.forEach((htmlObject) => {
-      this.element.appendChild(htmlObject);
+  appendElements (elements) {
+    const domElements = [].concat(elements || []);
+
+    domElements.forEach((element) => {
+      this.element.innerHTML += element.outerHTML;
     });
 
     return this;
