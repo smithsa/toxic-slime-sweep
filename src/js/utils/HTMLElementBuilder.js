@@ -19,9 +19,17 @@ export default class HTMLElementBuilder {
     return this;
   }
 
-  addClass (...classNames) {
+  addClasses (...classNames) {
     classNames.forEach((className) => {
       this.element.classList.add(className);
+    });
+
+    return this;
+  }
+
+  appendHTMLObjects (...htmlObjects) {
+    htmlObjects.forEach((htmlObject) => {
+      this.element.appendChild(htmlObject);
     });
 
     return this;
