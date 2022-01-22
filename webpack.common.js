@@ -50,10 +50,6 @@ module.exports = {
             presets: ['@babel/preset-env']
           }
         }
-      },
-      {
-        test: /\.json$/i,
-        type: "asset/resource",
       }
     ]
   },

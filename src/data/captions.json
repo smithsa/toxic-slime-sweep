@@ -1,11 +1,5 @@
 {
-  "key": "(glass breaks)",
-  "key1": "The slime is expanding quickly.",
-  "key2": [
-    "The slime is expanding quickly.",
-    "Solve the multiplication problems to clean-up the slime and save the laboratory!"
-  ]
+  "test": "Click on the kid and ride the rainbow sade",
+  "rideTheRainbow": "Ride the rainbow",
+  "clickakid": "Click a kiddo"
 }
-
-
-

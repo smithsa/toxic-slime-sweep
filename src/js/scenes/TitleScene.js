@@ -12,10 +12,10 @@ export default class TitleScene extends BaseScene {
 
   preload () {
     this.load.audio('test', './voice/Click a kid to ride the rainbow.m4a');
+    this.load.audio('test2', './voice/Click a kid to ride the rainbow.m4a');
   }
 
   create () {
-
     const titleHtmlBuilder = new HTMLElementBuilder("h1", CONST.CONTENT.TITLE);
     this.add.dom(this.game.config.width/2, this.game.config.height/2 - 200,
       titleHtmlBuilder.element);
@@ -28,7 +28,10 @@ export default class TitleScene extends BaseScene {
 
     playButtonHtmlBuilder.element.addEventListener("click", () => {
       const music = this.sound.add('test');
-      this.playCaptionedSound(music);
+      const music2 = this.sound.add('test2');
+      music2.addMarker({name:"rideTheRainbow", start: 1, duration: 2});
+      music2.addMarker({name:"clickakid", start: 0, duration: 1});
+      this.play(music2);
     });
   }
 }

@@ -24,5 +24,6 @@ const game = new Game(gameConfig);
 
 game.registry.set({
   currentAudio: null,
-  backgroundMusic: null
+  backgroundMusic: null,
+  captionsOn: false
 });
