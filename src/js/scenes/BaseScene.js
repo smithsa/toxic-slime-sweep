@@ -8,6 +8,7 @@ export default class BaseScene extends Scene {
 
     this.captions = captions;
     this.activeCaptions = [];
+    this.captionBottomOffset = 80;
   }
 
   play(soundObject, marker=null, config={}) {
@@ -24,9 +25,10 @@ export default class BaseScene extends Scene {
     this.game.sound.stopAll();
     if (marker) {
       soundObject.play(marker, config);
-    } else {
-      soundObject.play(config);
+      return;
     }
+
+    soundObject.play(config);
   }
 
   #playCaptionedSound(soundObject, marker=null, config={}) {
@@ -79,7 +81,7 @@ export default class BaseScene extends Scene {
       console.warn(`caption key: ${captionKey} was not found in captions`);
     }
 
-    this.add.dom(this.game.config.width/2, this.game.config.height-80,
+    this.add.dom(this.game.config.width/2, this.game.config.height-this.captionBottomOffset,
       captionHtmlElement.element);
 
     return captionHtmlElement.element;
