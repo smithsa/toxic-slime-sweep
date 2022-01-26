@@ -13,16 +13,16 @@ export default class BaseScene extends Scene {
 
   play(soundObject, marker=null, config={}) {
     if(this.game.registry.get("captionsOn")) {
-      this.#playCaptionedSound(soundObject, marker, config);
+      this._playCaptionedSound(soundObject, marker, config);
     } else{
-      this.#playSound(soundObject, marker, config);
+      this._playSound(soundObject, marker, config);
     }
 
     return soundObject;
   }
 
-  #playSound(soundObject, marker, config) {
-    this.game.sound.stopAll();
+  _playSound(soundObject, marker, config) {
+    soundObject.manager.stopAll();
     if (marker) {
       soundObject.play(marker, config);
       return;
@@ -31,52 +31,52 @@ export default class BaseScene extends Scene {
     soundObject.play(config);
   }
 
-  #playCaptionedSound(soundObject, marker=null, config={}) {
+  _playCaptionedSound(soundObject, marker=null, config={}) {
     if(soundObject.markers === {} || marker != null) {
-      this.#startCaptionedAudio(soundObject, marker, config);
+      this._startCaptionedAudio(soundObject, marker, config);
       return soundObject;
     }
 
     const markers = Object.keys(soundObject.markers);
     for(let i=0; i < markers.length-1; i++) {
-      this.#startCaptionedAudio(soundObject, markers[i], config).on("complete", () => {
-        this.#startCaptionedAudio(soundObject, markers[i+1], config);
+      this._startCaptionedAudio(soundObject, markers[i], config).on("complete", () => {
+        this._startCaptionedAudio(soundObject, markers[i+1], config);
       });
     }
 
     return soundObject;
   }
 
-  #startCaptionedAudio(soundObject, marker=null, config={}) {
-    this.#removeCaptions();
+  _startCaptionedAudio(soundObject, marker=null, config={}) {
+    this._removeCaptions();
 
     soundObject.on('play', (function() {
-      const captionElement = this.#addCaptions(marker || soundObject.key)
+      const captionElement = this._addCaptions(marker || soundObject.key)
       this.activeCaptions.push(captionElement);
     }).bind(this));
 
     soundObject.on('complete', (function() {
-      this.#removeCaptions();
+      this._removeCaptions();
       soundObject.removeAllListeners();
     }).bind(this));
 
-    this.#playSound(soundObject, marker, config);
+    this._playSound(soundObject, marker, config);
 
     return soundObject;
   }
 
-  #removeCaptions() {
+  _removeCaptions() {
     this.activeCaptions.forEach((caption) => {
       caption.remove();
     });
   }
 
-  #addCaptions (captionKey) {
+  _addCaptions (captionKey) {
     const captionHtmlElement = new HTMLElementBuilder("div");
     captionHtmlElement.addClasses("captions");
 
     if(captionKey in this.captions) {
-      captionHtmlElement.appendElements(this.#createCaptionCueElement(this.captions[captionKey]));
+      captionHtmlElement.appendElements(this._createCaptionCueElement(this.captions[captionKey]));
     } else {
       console.warn(`caption key: ${captionKey} was not found in captions`);
     }
@@ -87,7 +87,7 @@ export default class BaseScene extends Scene {
     return captionHtmlElement.element;
   }
 
-  #createCaptionCueElement (cueText) {
+  _createCaptionCueElement (cueText) {
     const captionCueElement = new HTMLElementBuilder("p", cueText);
     captionCueElement.addClasses("cue");
 

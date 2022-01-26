@@ -1,7 +1,8 @@
-import {CANVAS, Scale, Game} from 'phaser';
+import {CANVAS, Scale, Sound, Game} from 'phaser';
 import BootScene from './scenes/BootScene';
 import TitleScene from './scenes/TitleScene';
 import {CONST} from "./constants";
+import './components/register';
 
 const gameConfig = {
   type: CANVAS,
@@ -17,12 +18,19 @@ const gameConfig = {
     mode: Scale.FIT,
     autoCenter: Scale.CENTER_BOTH
   },
-  scene: [BootScene, TitleScene]
+  scene: [BootScene, TitleScene],
+  callbacks: {
+    preBoot: function (game) {
+      game.sound.voice = Sound.SoundManagerCreator.create(game),
+      game.sound.sfx = Sound.SoundManagerCreator.create(game),
+      game.sound.music = Sound.SoundManagerCreator.create(game)
+    }
+  }
 };
 
-const game = new Game(gameConfig);
+window.esparkGame = new Game(gameConfig);
 
-game.registry.set({
+window.esparkGame.registry.set({
   backgroundMusicOn: true,
-  captionsOn: true
+  captionsOn: false
 });

@@ -1,6 +1,7 @@
 import {CONST} from "../constants";
 import HTMLElementBuilder from "../utils/HTMLElementBuilder";
 import BaseScene from "./BaseScene";
+import OptionsDialog from "../components/options/OptionsDialog";
 import '../../scss/title.scss';
 
 export default class TitleScene extends BaseScene {
@@ -26,9 +27,12 @@ export default class TitleScene extends BaseScene {
     this.add.dom(this.game.config.width/2, this.game.config.height/2,
       playButtonHtmlBuilder.element);
 
+    const optionsDialog = new OptionsDialog();
+    this.add.dom(200, 200, optionsDialog);
+
     playButtonHtmlBuilder.element.addEventListener("click", () => {
-      const music = this.sound.add('test');
-      const music2 = this.sound.add('test2');
+      // const music = this.game.sound.voice.add('test');
+      const music2 = this.game.sound.voice.add('test2');
       music2.addMarker({name:"rideTheRainbow", start: 1, duration: 2});
       music2.addMarker({name:"clickakid", start: 0, duration: 1});
       this.play(music2);

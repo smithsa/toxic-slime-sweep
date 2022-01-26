@@ -19,7 +19,7 @@ export default class HTMLElementBuilder {
     return this;
   }
 
-  addClasses (...classNames) {
+  addClasses(...classNames) {
     classNames.forEach((className) => {
       this.element.classList.add(className);
     });
@@ -27,12 +27,18 @@ export default class HTMLElementBuilder {
     return this;
   }
 
-  appendElements (elements) {
+  appendElements(elements) {
     const domElements = [].concat(elements || []);
 
     domElements.forEach((element) => {
-      this.element.innerHTML += element.outerHTML;
+      this.element.appendChild(element);
     });
+
+    return this;
+  }
+
+  setInnerHtml(htmlString) {
+    this.element.innerHTML = htmlString;
 
     return this;
   }

@@ -4,6 +4,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: './src/js/index.js',
+  target: ['web', 'es5'],
   plugins: [
     new webpack.DefinePlugin({
       'typeof CANVAS_RENDERER': JSON.stringify(true),
