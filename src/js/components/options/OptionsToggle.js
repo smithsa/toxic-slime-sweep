@@ -14,10 +14,10 @@ export default class OptionsToggle extends HTMLElement{
         button .off{
             background: red;
         }
-        button[aria-pressed] .off {
+        button[aria-pressed="true"] .off {
             background: none;
         }
-        button[aria-pressed] .on{
+        button[aria-pressed="true"] .on{
             background: green;
         }
         :host {
@@ -25,8 +25,8 @@ export default class OptionsToggle extends HTMLElement{
         }
       </style>
       <div class="esg-toggle esg-component">
-        <span class="es-label">${this.getAttribute("label")}</span>
-        <button type="button" role="switch" aria-label="${this.getAttribute("label")}" id="${this.getAttribute("id")}">
+        <span class="es-label">${this.label}</span>
+        <button type="button" role="switch" aria-label="${this.label}" id="${this.id}">
             <span class="esg-toggle-state on">On</span><span class="esg-toggle-state off">Off</span>
         </button>
       </div>
@@ -34,19 +34,19 @@ export default class OptionsToggle extends HTMLElement{
 
     this.shadowtoggleButton = this.shadowRoot.querySelector("button");
     this.shadowtoggleButtonLabel = this.shadowRoot.querySelector(".es-label");
-
     this.handleToggle = this.handleToggle.bind(this);
+
     this.toggleEvent = new CustomEvent("toggle", {
       detail: {
-        on: false
+        on: this.toggleOn
       }
     });
   }
 
   handleToggle (event) {
     this.shadowtoggleButton.toggleAttribute("aria-pressed");
-    const toggleButtonPressed = this.shadowtoggleButton.hasAttribute("aria-pressed");
-    this.toggleEvent.detail.on = toggleButtonPressed
+    this.toggleOn = this.toggleOn.toLowerCase() === 'true' ? false : true;
+    this.toggleEvent.detail.on = this.toggleOn;
     this.dispatchEvent(this.toggleEvent);
   }
 
@@ -59,7 +59,7 @@ export default class OptionsToggle extends HTMLElement{
   }
 
   static get observedAttributes() {
-    return ["id", "label"];
+    return ["id", "label", "toggleon"];
   }
 
   get id() {
@@ -70,12 +70,20 @@ export default class OptionsToggle extends HTMLElement{
     return this.getAttribute("label");
   }
 
+  get toggleOn() {
+    return this.getAttribute("toggleon");
+  }
+
   set id(id) {
     this.setAttribute("id", id);
   }
 
   set label(label) {
     this.setAttribute("label", label);
+  }
+
+  set toggleOn(toggleOnVal) {
+    this.setAttribute("toggleon", toggleOnVal);
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -86,6 +94,9 @@ export default class OptionsToggle extends HTMLElement{
         break;
       case "id":
         this.shadowtoggleButton.id = newValue;
+        break;
+      case "toggleon":
+        this.shadowtoggleButton.setAttribute("aria-pressed", newValue);
         break;
       default:
         break;
