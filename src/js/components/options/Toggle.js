@@ -1,6 +1,4 @@
-import HTMLElementBuilder from '../../utils/HTMLElementBuilder';
-
-export default class OptionsToggle extends HTMLElement{
+export default class Toggle extends HTMLElement{
   constructor() {
     super();
 
@@ -9,19 +7,40 @@ export default class OptionsToggle extends HTMLElement{
       <style>
         button {
             cursor: pointer;
-            font-size: 32px;
+            background: #fff;
+            box-shadow: none;
+            border:none;
+            font-size: 36px;
+            padding: 0;
+            letter-spacing: 1px;
         }
-        button .off{
+        .esg-toggle-state {
+            padding: 8px 15px;
+        }
+
+        button span.on{
+            color: #555;
+        }
+
+        button span.off{
             background: red;
+            color: #fff;
         }
-        button[aria-pressed="true"] .off {
+
+        button[aria-pressed="true"] span.off {
             background: none;
+            color: #555;
+            opacity: 1;
         }
-        button[aria-pressed="true"] .on{
+        button[aria-pressed="true"] span.on{
             background: green;
+            color: #fff;
         }
-        :host {
-            font-size: 32px;
+        .es-label {
+          width: 210px;
+          font-size: 32px;
+          display: inline-block;
+          letter-spacing: 1px;
         }
       </style>
       <div class="esg-toggle esg-component">
@@ -35,7 +54,6 @@ export default class OptionsToggle extends HTMLElement{
     this.shadowtoggleButton = this.shadowRoot.querySelector("button");
     this.shadowtoggleButtonLabel = this.shadowRoot.querySelector(".es-label");
     this.handleToggle = this.handleToggle.bind(this);
-
     this.toggleEvent = new CustomEvent("toggle", {
       detail: {
         on: this.toggleOn
@@ -43,7 +61,7 @@ export default class OptionsToggle extends HTMLElement{
     });
   }
 
-  handleToggle (event) {
+  handleToggle () {
     this.shadowtoggleButton.toggleAttribute("aria-pressed");
     this.toggleOn = this.toggleOn.toLowerCase() === 'true' ? false : true;
     this.toggleEvent.detail.on = this.toggleOn;

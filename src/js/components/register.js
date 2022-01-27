@@ -1,7 +1,7 @@
-import OptionsDialog from "./options/OptionsDialog";
-import OptionsToggle from "./options/OptionsToggle";
-import OptionsSlider from "./options/OptionsSlider";
+import OptionsModal from "./options/OptionsModal";
+import Toggle from "./options/Toggle";
+import Slider from "./options/Slider";
 
-customElements.define('options-dialog', OptionsDialog);
-customElements.define('options-slider', OptionsSlider);
-customElements.define('captions-toggle', OptionsToggle);
+customElements.define('options-modal', OptionsModal);
+customElements.define('esg-slider', Slider);
+customElements.define('esg-toggle', Toggle);

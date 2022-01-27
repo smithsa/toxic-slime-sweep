@@ -1,8 +1,6 @@
 import {CONST} from "../constants";
 import HTMLElementBuilder from "../utils/HTMLElementBuilder";
 import BaseScene from "./BaseScene";
-import OptionsDialog from "../components/options/OptionsDialog";
-import '../../scss/title.scss';
 
 export default class TitleScene extends BaseScene {
   constructor () {
@@ -27,8 +25,10 @@ export default class TitleScene extends BaseScene {
     this.add.dom(this.game.config.width/2, this.game.config.height/2,
       playButtonHtmlBuilder.element);
 
-    const optionsDialog = new OptionsDialog();
-    this.add.dom(200, 200, optionsDialog);
+    const optionsDialogBuilder = new HTMLElementBuilder("options-modal")
+      .addAttributes({open: true});
+
+    this.add.dom(this.game.config.width/2, this.game.config.height/2 - 50, optionsDialogBuilder.element);
 
     playButtonHtmlBuilder.element.addEventListener("click", () => {
       // const music = this.game.sound.voice.add('test');
