@@ -8,6 +8,7 @@ export default class Slider extends HTMLElement{
         .esg-slider {
             display: flex;
             justify-content: space-between;
+            align-content: center;
         }
 
         .esg-slider__input {
@@ -59,7 +60,6 @@ export default class Slider extends HTMLElement{
   }
 
   connectedCallback() {
-    console.log("connected")
     this.inputElement.addEventListener("change", this.handleChange);
   }
 
