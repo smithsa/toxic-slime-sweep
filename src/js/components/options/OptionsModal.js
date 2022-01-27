@@ -1,4 +1,4 @@
-export default class OptionsModal extends HTMLElement{
+export default class OptionsModal extends HTMLElement {
   constructor() {
     super();
 
@@ -30,8 +30,9 @@ export default class OptionsModal extends HTMLElement{
             border-radius: 20px;
             padding: 60px;
             font-family: Arial, Helvetica, sans-serif;
-            color: #fff;
-            background-color: rgba(0, 0, 0, .95);
+            /*color: #fff;*/
+            border: 5px solid black;
+            background: #fff;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -55,6 +56,11 @@ export default class OptionsModal extends HTMLElement{
             align-self: center;
             border-radius: 10px;
             padding: 10px 30px;
+            background: green;
+            color: #fff;
+            border: none;
+            box-shadow: none;
+            letter-spacing: 1px;
          }
 
          .esg-modal[aria-hidden="false"] {
@@ -130,7 +136,7 @@ export default class OptionsModal extends HTMLElement{
       this._getOppositeValueOfValueAttr(this.open));
     this.voiceSliderElement.setAttribute("value", window.esparkGame.sound[this.VOICE_SOUND_MANAGER_ID].volume);
     this.musicSliderElement.setAttribute("value", window.esparkGame.sound[this.MUSIC_SOUND_MANAGER_ID].volume);
-    this.captionsToggleElement.setAttribute("toggleon", window.esparkGame.registry.get(this.CAPTIONS_KEY));
+    this.captionsToggleElement.setAttribute("toggle-on", window.esparkGame.registry.get(this.CAPTIONS_KEY));
   }
 
   disconnectedCallback() {
@@ -155,7 +161,6 @@ export default class OptionsModal extends HTMLElement{
   attributeChangedCallback(name, oldValue, newValue) {
     switch(name) {
       case "open":
-        console.log(this._getOppositeValueOfValueAttr(newValue))
         this.modalElement.setAttribute("aria-hidden",
           this._getOppositeValueOfValueAttr(newValue));
         break;

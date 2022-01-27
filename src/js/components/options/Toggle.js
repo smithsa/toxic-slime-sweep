@@ -13,6 +13,7 @@ export default class Toggle extends HTMLElement{
             font-size: 36px;
             padding: 0;
             letter-spacing: 1px;
+            border: 3px solid #000000;
         }
         .esg-toggle-state {
             padding: 8px 15px;
@@ -23,7 +24,7 @@ export default class Toggle extends HTMLElement{
         }
 
         button span.off{
-            background: red;
+            background: #555;
             color: #fff;
         }
 
@@ -77,7 +78,7 @@ export default class Toggle extends HTMLElement{
   }
 
   static get observedAttributes() {
-    return ["id", "label", "toggleon"];
+    return ["id", "label", "toggle-on"];
   }
 
   get id() {
@@ -89,7 +90,7 @@ export default class Toggle extends HTMLElement{
   }
 
   get toggleOn() {
-    return this.getAttribute("toggleon");
+    return this.getAttribute("toggle-on");
   }
 
   set id(id) {
@@ -101,7 +102,7 @@ export default class Toggle extends HTMLElement{
   }
 
   set toggleOn(toggleOnVal) {
-    this.setAttribute("toggleon", toggleOnVal);
+    this.setAttribute("toggle-on", toggleOnVal);
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -113,7 +114,7 @@ export default class Toggle extends HTMLElement{
       case "id":
         this.shadowtoggleButton.id = newValue;
         break;
-      case "toggleon":
+      case "toggle-on":
         this.shadowtoggleButton.setAttribute("aria-pressed", newValue);
         break;
       default:

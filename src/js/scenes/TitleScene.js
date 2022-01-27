@@ -20,15 +20,20 @@ export default class TitleScene extends BaseScene {
       titleHtmlBuilder.element);
 
     const playButtonHtmlBuilder = new HTMLElementBuilder("button", CONST.CONTENT.PLAY_BUTTON_TEXT);
-    playButtonHtmlBuilder.addAttributes({"aria-label": "play"});
+    playButtonHtmlBuilder.addAttributes({"aria-label": "play", "style": "z-index: 100; position: relative"});
 
     this.add.dom(this.game.config.width/2, this.game.config.height/2,
       playButtonHtmlBuilder.element);
 
-    const optionsDialogBuilder = new HTMLElementBuilder("options-modal")
-      .addAttributes({open: true});
+    const optionsModalBuilder = new HTMLElementBuilder("options-modal")
+      .addAttributes({"open": false, "id": "options-modal","style": "pointer-events: none"});
+    this.add.dom(CONST.OPTIONS_MODAL_POS.x,
+      CONST.OPTIONS_MODAL_POS.y,
+      optionsModalBuilder.element);
 
-    this.add.dom(this.game.config.width/2, this.game.config.height/2 - 50, optionsDialogBuilder.element);
+    const optionsButtonBuilder = new HTMLElementBuilder("options-button", "Options")
+      .addAttributes({"modal-id": "options-modal"});
+    this.add.dom(200, 200, optionsButtonBuilder.element);
 
     playButtonHtmlBuilder.element.addEventListener("click", () => {
       // const music = this.game.sound.voice.add('test');

@@ -8,5 +8,9 @@ export const CONST = {
   CONTENT : {
     TITLE: "Toxic Slime Sweep",
     PLAY_BUTTON_TEXT: "Play"
+  },
+  OPTIONS_MODAL_POS: {
+    x: 430,
+    y: 100,
   }
 }
