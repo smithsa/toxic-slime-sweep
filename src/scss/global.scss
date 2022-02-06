@@ -1,2 +1,9 @@
 @import "captions";
 @import "title";
+
+button {
+  display: none;
+  background: none;
+  box-shadow: none;
+  border:none;
+}

@@ -1,6 +1,7 @@
 import {Scene} from "phaser";
 import HTMLElementBuilder from "../utils/HTMLElementBuilder";
 import captions from '../../data/captions.json';
+import {CONST} from "../constants";
 
 export default class BaseScene extends Scene {
   constructor(key) {
@@ -9,6 +10,19 @@ export default class BaseScene extends Scene {
     this.captions = captions;
     this.activeCaptions = [];
     this.captionBottomOffset = 80;
+  }
+
+  addOptionsSettings() {
+    const optionsModalBuilder = new HTMLElementBuilder("options-modal")
+      .addAttributes({"open": false, "id": "options-modal", "color": `${CONST.OPTIONS.COLOR}`});
+
+    this.add.dom(CONST.OPTIONS.MODAL_POS.x,
+      CONST.OPTIONS.MODAL_POS.y,
+      optionsModalBuilder.element);
+
+    const optionsButtonBuilder = new HTMLElementBuilder("options-button")
+      .addAttributes({"modal-id": "options-modal", color: `${CONST.OPTIONS.COLOR}`});
+    this.add.dom(this.game.config.width - 100, 100, optionsButtonBuilder.element);
   }
 
   play(soundObject, marker=null, config={}) {
@@ -32,7 +46,7 @@ export default class BaseScene extends Scene {
   }
 
   _playCaptionedSound(soundObject, marker=null, config={}) {
-    if(soundObject.markers === {} || marker != null) {
+    if(Object.keys(soundObject.markers).length === 0 || marker == null) {
       this._startCaptionedAudio(soundObject, marker, config);
       return soundObject;
     }

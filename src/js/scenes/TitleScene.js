@@ -1,6 +1,7 @@
 import {CONST} from "../constants";
 import HTMLElementBuilder from "../utils/HTMLElementBuilder";
 import BaseScene from "./BaseScene";
+import ButtonImage from "../components/ButtonImage";
 
 export default class TitleScene extends BaseScene {
   constructor () {
@@ -10,37 +11,39 @@ export default class TitleScene extends BaseScene {
   }
 
   preload () {
-    this.load.audio('test', './voice/Click a kid to ride the rainbow.m4a');
-    this.load.audio('test2', './voice/Click a kid to ride the rainbow.m4a');
+    this.load.audio('title', './voice/title.mp3');
   }
 
   create () {
-    const titleHtmlBuilder = new HTMLElementBuilder("h1", CONST.CONTENT.TITLE);
-    this.add.dom(this.game.config.width/2, this.game.config.height/2 - 200,
-      titleHtmlBuilder.element);
+    this.add.sprite(800, 450,'background').setOrigin(0.5).setScale(1.05,1);
 
-    const playButtonHtmlBuilder = new HTMLElementBuilder("button", CONST.CONTENT.PLAY_BUTTON_TEXT);
-    playButtonHtmlBuilder.addAttributes({"aria-label": "play", "style": "z-index: 100; position: relative"});
+    this.addGameTitle();
 
-    this.add.dom(this.game.config.width/2, this.game.config.height/2,
+    const playButton = this.addPlayButton();
+    playButton.addEventListener("click", () => {
+      const music = this.game.sound.voice.add('title');
+      this.play(music);
+    });
+
+    this.addOptionsSettings();
+  }
+
+  addGameTitle () {
+    const titleHtmlBuilder = new HTMLElementBuilder("img");
+    titleHtmlBuilder.addAttributes({"src": "./img/title.png",
+      "aria-label": `${CONST.CONTENT.TITLE}`,
+      "width": "1000px"
+    });
+
+    this.add.dom(this.game.config.width/2, 100,
+      titleHtmlBuilder.element).setOrigin(0.5);
+  }
+
+  addPlayButton () {
+    const playButtonHtmlBuilder = new ButtonImage(CONST.CONTENT.PLAY_BUTTON_TEXT, "./img/btn_play.png");
+    this.add.dom(this.game.config.width/2 - 150, this.game.config.height/2 + 50,
       playButtonHtmlBuilder.element);
 
-    const optionsModalBuilder = new HTMLElementBuilder("options-modal")
-      .addAttributes({"open": false, "id": "options-modal","style": "pointer-events: none"});
-    this.add.dom(CONST.OPTIONS_MODAL_POS.x,
-      CONST.OPTIONS_MODAL_POS.y,
-      optionsModalBuilder.element);
-
-    const optionsButtonBuilder = new HTMLElementBuilder("options-button", "Options")
-      .addAttributes({"modal-id": "options-modal"});
-    this.add.dom(200, 200, optionsButtonBuilder.element);
-
-    playButtonHtmlBuilder.element.addEventListener("click", () => {
-      // const music = this.game.sound.voice.add('test');
-      const music2 = this.game.sound.voice.add('test2');
-      music2.addMarker({name:"rideTheRainbow", start: 1, duration: 2});
-      music2.addMarker({name:"clickakid", start: 0, duration: 1});
-      this.play(music2);
-    });
+    return playButtonHtmlBuilder.element;
   }
 }

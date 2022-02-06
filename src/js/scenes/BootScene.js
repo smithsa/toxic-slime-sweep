@@ -10,7 +10,8 @@ export default class BootScene extends BaseScene {
   }
 
   preload () {
-
+    this.load.path = './img/';
+    this.load.image('background', 'bg.jpg');
   }
 
   create () {

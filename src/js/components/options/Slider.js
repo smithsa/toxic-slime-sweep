@@ -12,8 +12,6 @@ export default class Slider extends HTMLElement{
         }
 
         .esg-slider__input {
-            /*-webkit-appearance: none;*/
-            /*appearance: none;*/
             flex-grow: 1;
             cursor: pointer;
             height: 25px;
@@ -25,7 +23,7 @@ export default class Slider extends HTMLElement{
             appearance: none;
             width: 25px;
             height: 25px;
-            background: #04AA6D;
+            background: var(--primary-color);
             cursor: pointer;
         }
 
@@ -34,6 +32,56 @@ export default class Slider extends HTMLElement{
           font-size: 32px;
           width: 210px;
           letter-spacing: 1px;
+        }
+
+        input[type=range] {
+          height: 34px;
+          -webkit-appearance: none;
+          margin: 10px 0;
+        }
+
+        input[type=range]::-webkit-slider-runnable-track {
+          width: 100%;
+          height: 15px;
+          cursor: pointer;
+          animate: 0.2s;
+          background: var(--primary-color);
+          border-radius: 25px;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+          box-shadow: 1px 1px 1px #000031;
+          border: 1px solid rgba(0,0,0, .9);
+          height: 38px;
+          width: 38px;
+          border-radius: 50%;
+          background: #FFFFFF;
+          cursor: pointer;
+          -webkit-appearance: none;
+          margin-top: -13px;
+        }
+        input[type=range]:focus::-webkit-slider-runnable-track {
+          background: var(--primary-color);
+        }
+        input[type=range]::-moz-range-track {
+          width: 100%;
+          height: 11px;
+          cursor: pointer;
+          animate: 0.2s;
+          box-shadow: 1px 1px 1px #000000;
+          background: #0f4863;
+          border: 0px solid #010101;
+        }
+        input[type=range]::-moz-range-thumb {
+          box-shadow: 1px 1px 1px #000031;
+          border: 1px solid rgba(0,0,0, .9);
+          height: 38px;
+          width: 38px;
+          border-radius: 50%;
+          background: #FFFFFF;
+          cursor: pointer;
+          -webkit-appearance: none;
+          margin-top: -13px;
         }
       </style>
       <div class="esg-slider esg-element">

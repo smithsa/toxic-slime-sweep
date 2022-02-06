@@ -12,29 +12,35 @@ export default class Toggle extends HTMLElement{
             border:none;
             font-size: 36px;
             padding: 0;
-            letter-spacing: 1px;
-            border: 3px solid #000000;
+            letter-spacing: 2px;
+            border: 3px solid #555555;
+            border-radius: 30px;
+            overflow: hidden;
         }
         .esg-toggle-state {
             padding: 8px 15px;
         }
 
         button span.on{
-            color: #555;
+            color: #555555;
         }
 
         button span.off{
-            background: #555;
+            background: #555555;
             color: #fff;
+        }
+
+        button[aria-pressed="true"] {
+            border-color: var(--primary-color);
         }
 
         button[aria-pressed="true"] span.off {
             background: none;
-            color: #555;
+            color: #555555;
             opacity: 1;
         }
         button[aria-pressed="true"] span.on{
-            background: green;
+            background: var(--primary-color);
             color: #fff;
         }
         .es-label {

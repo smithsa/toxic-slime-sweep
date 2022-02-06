@@ -9,8 +9,11 @@ export const CONST = {
     TITLE: "Toxic Slime Sweep",
     PLAY_BUTTON_TEXT: "Play"
   },
-  OPTIONS_MODAL_POS: {
-    x: 430,
-    y: 100,
+  OPTIONS : {
+    COLOR: "#0f4863",
+    MODAL_POS: {
+      x: 500,
+      y: 100,
+    }
   }
 }

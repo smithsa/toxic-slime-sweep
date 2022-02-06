@@ -26,16 +26,23 @@ export default class OptionsModal extends HTMLElement {
 
          .esg-modal {
             width: 600px;
-            height: 500px;
-            border-radius: 20px;
-            padding: 60px;
+            height: 550px;
             font-family: Arial, Helvetica, sans-serif;
-            /*color: #fff;*/
-            border: 5px solid black;
-            background: #fff;
+            display: flex;
+            flex-direction: column;
+            align-content: start;
+            --primary-color: #000000;
+         }
+
+         .esg-modal__content {
+            background: #ffffff;
+            border-radius: 20px;
+            border: 5px solid var(--primary-color);
+            padding: 60px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
+            align-content: center;
          }
 
          .esg-modal h2 {
@@ -43,10 +50,18 @@ export default class OptionsModal extends HTMLElement {
             margin: 0 0 30px 0;
             text-align: center;
             letter-spacing: 1px;
+            background-color: var(--primary-color);
+            color: #ffffff;
+            width: 60%;
+            padding: 10px 20px;
+            border-radius: 50px;
+            margin: 0 auto -40px auto;
+            z-index: 1000;
          }
 
          .esg-modal__item {
             margin-bottom: 30px;
+            margin-top: 30px;
          }
 
          .esg-modal__close {
@@ -56,11 +71,13 @@ export default class OptionsModal extends HTMLElement {
             align-self: center;
             border-radius: 10px;
             padding: 10px 30px;
-            background: green;
+            background: var(--primary-color);
             color: #fff;
             border: none;
             box-shadow: none;
             letter-spacing: 1px;
+            font-weight: bold;
+            border: 3px solid #ffffff;
          }
 
          .esg-modal[aria-hidden="false"] {
@@ -73,21 +90,24 @@ export default class OptionsModal extends HTMLElement {
       </style>
       <div class="esg-modal" role="dialog"
         aria-hidden="true"
-        aria-label="game options" aria-describedby="esg-modal__desc">
+        aria-label="game options"
+        aria-describedby="esg-modal__desc">
             <h2>Options</h2>
-            <p id="esg-modal__desc" class="sr-only">Turn captioning on or off, or adjust the volume of music and voice.</p>
-            <div class="esg-modal__items">
-                <div class="esg-modal__item">
-                  <esg-toggle id="captions-toggle" label="Captions"></esg-toggle>
-                </div>
-                <div class="esg-modal__item">
-                  <esg-slider id="voice-slider" class="esg-modal__item" label="Voice"></esg-slider>
-                </div>
-                <div class="esg-modal__item">
-                  <esg-slider id="music-slider" class="esg-modal__item" label="Music"></esg-slider>
-                </div>
+            <div class="esg-modal__content">
+              <p id="esg-modal__desc" class="sr-only">Turn captioning on or off, or adjust the volume of music and voice.</p>
+              <div class="esg-modal__items">
+                  <div class="esg-modal__item">
+                    <esg-toggle id="captions-toggle" label="Captions"></esg-toggle>
+                  </div>
+                  <div class="esg-modal__item">
+                    <esg-slider id="voice-slider" class="esg-modal__item" label="Voice"></esg-slider>
+                  </div>
+                  <div class="esg-modal__item">
+                    <esg-slider id="music-slider" class="esg-modal__item" label="Music"></esg-slider>
+                  </div>
+              </div>
+              <button class="esg-modal__close" aria-label="close">Close</button>
             </div>
-            <button class="esg-modal__close" aria-label="close">Close</button>
       </div>
     `;
 
@@ -95,7 +115,9 @@ export default class OptionsModal extends HTMLElement {
     this.voiceSliderElement = this.shadowRoot.getElementById("voice-slider");
     this.musicSliderElement = this.shadowRoot.getElementById("music-slider");
     this.modalElement = this.shadowRoot.querySelector(".esg-modal");
-    this.closeButton = this.shadowRoot.querySelector(".esg-modal__close");
+    this.closeButton = this.modalElement.querySelector(".esg-modal__close");
+    this.header = this.modalElement.querySelector("h2");
+    this.modalContent = this.modalElement.querySelector(".esg-modal__content");
   }
 
   _captionToggleHandler(event) {
@@ -147,15 +169,23 @@ export default class OptionsModal extends HTMLElement {
   }
 
   static get observedAttributes() {
-    return ["open"];
+    return ["open", "color"];
   }
 
   get open() {
-    return this.getAttribute('open');
+    return this.getAttribute("open");
   }
 
   set open(isOpen) {
     this.setAttribute("open", isOpen);
+  }
+
+  get color() {
+    return this.getAttribute("color");
+  }
+
+  set color(color) {
+    this.icon.setAttribute("color", color);
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -163,6 +193,9 @@ export default class OptionsModal extends HTMLElement {
       case "open":
         this.modalElement.setAttribute("aria-hidden",
           this._getOppositeValueOfValueAttr(newValue));
+        break;
+      case "color":
+        this.modalElement.style.setProperty("--primary-color", newValue);
         break;
       default:
         break;
