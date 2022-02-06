@@ -3,6 +3,7 @@ import BootScene from './scenes/BootScene';
 import TitleScene from './scenes/TitleScene';
 import {CONST} from "./constants";
 import './components/register';
+import IntroductionScene from "./scenes/IntroductionScene";
 
 const gameConfig = {
   type: CANVAS,
@@ -18,7 +19,7 @@ const gameConfig = {
     mode: Scale.FIT,
     autoCenter: Scale.CENTER_BOTH
   },
-  scene: [BootScene, TitleScene],
+  scene: [BootScene, TitleScene, IntroductionScene],
   callbacks: {
     preBoot: function (game) {
       game.sound.voice = Sound.SoundManagerCreator.create(game),

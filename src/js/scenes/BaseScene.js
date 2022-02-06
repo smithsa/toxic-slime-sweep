@@ -25,6 +25,10 @@ export default class BaseScene extends Scene {
     this.add.dom(this.game.config.width - 100, 100, optionsButtonBuilder.element);
   }
 
+  addGameBackground () {
+    this.add.sprite(800, 450,'background').setOrigin(0.5).setScale(1.05,1);
+  }
+
   play(soundObject, marker=null, config={}) {
     if(this.game.registry.get("captionsOn")) {
       this._playCaptionedSound(soundObject, marker, config);

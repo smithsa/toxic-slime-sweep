@@ -15,14 +15,16 @@ export default class TitleScene extends BaseScene {
   }
 
   create () {
-    this.add.sprite(800, 450,'background').setOrigin(0.5).setScale(1.05,1);
+    this.addGameBackground();
 
     this.addGameTitle();
 
     const playButton = this.addPlayButton();
     playButton.addEventListener("click", () => {
       const music = this.game.sound.voice.add('title');
-      this.play(music);
+      this.play(music).on("complete", () => {
+        this.scene.start(CONST.SCENES.INTRODUCTION);
+      })
     });
 
     this.addOptionsSettings();
@@ -41,7 +43,7 @@ export default class TitleScene extends BaseScene {
 
   addPlayButton () {
     const playButtonHtmlBuilder = new ButtonImage(CONST.CONTENT.PLAY_BUTTON_TEXT, "./img/btn_play.png");
-    this.add.dom(this.game.config.width/2 - 150, this.game.config.height/2 + 50,
+    this.add.dom(this.game.config.width/2 - 130, this.game.config.height/2 + 50,
       playButtonHtmlBuilder.element);
 
     return playButtonHtmlBuilder.element;
