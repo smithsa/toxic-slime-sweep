@@ -33,5 +33,5 @@ window.esparkGame = new Game(gameConfig);
 
 window.esparkGame.registry.set({
   backgroundMusicOn: true,
-  captionsOn: false
+  captionsOn: true
 });

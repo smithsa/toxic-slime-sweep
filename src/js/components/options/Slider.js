@@ -38,6 +38,7 @@ export default class Slider extends HTMLElement{
           height: 34px;
           -webkit-appearance: none;
           margin: 10px 0;
+          background: none;
         }
 
         input[type=range]::-webkit-slider-runnable-track {

@@ -50,17 +50,31 @@ export default class BaseScene extends Scene {
   }
 
   _playCaptionedSound(soundObject, marker=null, config={}) {
-    if(Object.keys(soundObject.markers).length === 0 || marker == null) {
+    const markers = Object.keys(soundObject.markers);
+    if(markers.length === 0) {
       this._startCaptionedAudio(soundObject, marker, config);
+
+      soundObject.on('complete', (function() {
+        soundObject.removeAllListeners();
+      }).bind(this));
+
       return soundObject;
     }
 
-    const markers = Object.keys(soundObject.markers);
-    for(let i=0; i < markers.length-1; i++) {
-      this._startCaptionedAudio(soundObject, markers[i], config).on("complete", () => {
-        this._startCaptionedAudio(soundObject, markers[i+1], config);
-      });
-    }
+    // setting up the generator to play subsequent markers after the
+    // sound object has completed playing.
+    const soundMarkerGenerator = this._SoundMarkerIterator(markers);
+    soundObject.on("complete", () => {
+      const currentMarker = soundMarkerGenerator.next();
+      if (currentMarker.done) {
+        this._removeCaptions();
+        soundObject.removeAllListeners();
+      } else {
+        this._startCaptionedAudio(soundObject, currentMarker.value, config);
+      }
+    });
+
+    this._startCaptionedAudio(soundObject, markers[0], config);
 
     return soundObject;
   }
@@ -73,10 +87,6 @@ export default class BaseScene extends Scene {
       this.activeCaptions.push(captionElement);
     }).bind(this));
 
-    soundObject.on('complete', (function() {
-      this._removeCaptions();
-      soundObject.removeAllListeners();
-    }).bind(this));
 
     this._playSound(soundObject, marker, config);
 
@@ -90,9 +100,9 @@ export default class BaseScene extends Scene {
   }
 
   _addCaptions (captionKey) {
+    this._removeCaptions();
     const captionHtmlElement = new HTMLElementBuilder("div");
     captionHtmlElement.addClasses("captions");
-
     if(captionKey in this.captions) {
       captionHtmlElement.appendElements(this._createCaptionCueElement(this.captions[captionKey]));
     } else {
@@ -110,5 +120,13 @@ export default class BaseScene extends Scene {
     captionCueElement.addClasses("cue");
 
     return captionCueElement.element;
+  }
+
+  * _SoundMarkerIterator(markers) {
+    for(let i=1; i < markers.length; i++) {
+      yield markers[i];
+    }
+
+    return;
   }
 }
