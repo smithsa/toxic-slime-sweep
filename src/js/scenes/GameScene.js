@@ -1,6 +1,7 @@
 import {CONST} from "../constants";
 import BaseScene from "./BaseScene";
 import slimeCoordinates from "../../data/slime_coordinates.json";
+import questions from "../../data/questions.json";
 
 export default class GameScene extends BaseScene {
   constructor() {
@@ -11,6 +12,7 @@ export default class GameScene extends BaseScene {
     this.slime = slimeCoordinates;
     this.slimeQueue = Object.keys(slimeCoordinates);
     this.slimeOnScreen = [];
+    this.questions = this.questionGenerator()
   }
 
   preload() {
@@ -21,7 +23,7 @@ export default class GameScene extends BaseScene {
   create() {
     this.slimeQueue.sort(this.randomArrSort);
     this.addGameBackground();
-    this.addSlime();
+    this.addSlime(5);
     this.removeSlime();
   }
 
@@ -42,5 +44,13 @@ export default class GameScene extends BaseScene {
       this.slimeQueue.push(slimeKey);
       this.slime[slimeKey]["object"].destroy();
     }
+  }
+
+  * questionGenerator () {
+    for(let question in questions) {
+      yield questions[question];
+    }
+
+    return;
   }
 }
