@@ -2,18 +2,19 @@ import {CONST} from "../constants";
 import BaseScene from "./BaseScene";
 
 export default class IntroductionScene extends BaseScene {
-  constructor () {
+  constructor() {
     super({
       key: CONST.SCENES.INTRODUCTION
     });
   }
 
-  preload () {
+  preload() {
     this.load.audio('intro', './voice/intro.mp3');
   }
 
-  create () {
+  create() {
     this.addGameBackground();
+    this.fadeInScene();
     this.addOptionsSettings();
     const introductionSound = this.game.sound.voice.add('intro');
     introductionSound.addMarker({name: "intro_start", start: 0, duration: 3});

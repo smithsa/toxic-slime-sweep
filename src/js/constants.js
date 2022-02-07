@@ -3,7 +3,8 @@ export const CONST = {
     BASE: "BASE",
     BOOT: "BOOT",
     TITLE: "TITLE",
-    INTRODUCTION: "INTRODUCTION"
+    INTRODUCTION: "INTRODUCTION",
+    GAME: "GAME"
   },
   CAPTIONS_JSON: "Captions",
   CONTENT : {

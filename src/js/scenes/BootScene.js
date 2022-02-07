@@ -3,18 +3,17 @@ import BaseScene from "./BaseScene";
 import '../../scss/global.scss';
 
 export default class BootScene extends BaseScene {
-  constructor () {
+  constructor() {
     super({
       key: CONST.SCENES.BOOT
     });
   }
 
-  preload () {
-    this.load.path = './img/';
-    this.load.image('background', 'bg.jpg');
+  preload() {
+    this.load.image('background', './img/bg.jpg');
   }
 
-  create () {
-    this.scene.start(CONST.SCENES.TITLE);
+  create() {
+    this.scene.start(CONST.SCENES.GAME);
   }
 }

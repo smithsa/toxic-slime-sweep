@@ -29,6 +29,14 @@ export default class BaseScene extends Scene {
     this.add.sprite(800, 450,'background').setOrigin(0.5).setScale(1.05,1);
   }
 
+  fadeOutScene() {
+    this.cameras.main.fadeOut(1000, 0, 0, 0)
+  }
+
+  fadeInScene() {
+    this.cameras.main.fadeIn(1000, 0, 0, 0)
+  }
+
   play(soundObject, marker=null, config={}) {
     if(this.game.registry.get("captionsOn")) {
       this._playCaptionedSound(soundObject, marker, config);
@@ -37,6 +45,10 @@ export default class BaseScene extends Scene {
     }
 
     return soundObject;
+  }
+
+  randomArrSort () {
+    return 0.5 - Math.random();
   }
 
   _playSound(soundObject, marker, config) {
@@ -55,6 +67,7 @@ export default class BaseScene extends Scene {
       this._startCaptionedAudio(soundObject, marker, config);
 
       soundObject.on('complete', (function() {
+        this._removeCaptions();
         soundObject.removeAllListeners();
       }).bind(this));
 
@@ -110,7 +123,7 @@ export default class BaseScene extends Scene {
     }
 
     this.add.dom(this.game.config.width/2, this.game.config.height-this.captionBottomOffset,
-      captionHtmlElement.element);
+      captionHtmlElement.element).setOrigin(.5, 1);
 
     return captionHtmlElement.element;
   }

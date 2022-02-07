@@ -4,17 +4,17 @@ import BaseScene from "./BaseScene";
 import ButtonImage from "../components/ButtonImage";
 
 export default class TitleScene extends BaseScene {
-  constructor () {
+  constructor() {
     super({
       key: CONST.SCENES.TITLE
     });
   }
 
-  preload () {
+  preload() {
     this.load.audio('title', './voice/title.mp3');
   }
 
-  create () {
+  create() {
     this.addGameBackground();
 
     this.addGameTitle();
@@ -41,7 +41,7 @@ export default class TitleScene extends BaseScene {
       titleHtmlBuilder.element).setOrigin(0.5);
   }
 
-  addPlayButton () {
+  addPlayButton() {
     const playButtonHtmlBuilder = new ButtonImage(CONST.CONTENT.PLAY_BUTTON_TEXT, "./img/btn_play.png");
     this.add.dom(this.game.config.width/2 - 130, this.game.config.height/2 + 50,
       playButtonHtmlBuilder.element);

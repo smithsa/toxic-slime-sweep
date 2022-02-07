@@ -1,0 +1,230 @@
+{
+	"textures": [
+		{
+			"image": "slimeatlas.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 424,
+				"h": 943
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "slime10.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 103,
+						"h": 93
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 103,
+						"h": 93
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 103,
+						"h": 93
+					}
+				},
+				{
+					"filename": "slime6.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 299,
+						"h": 128
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 299,
+						"h": 128
+					},
+					"frame": {
+						"x": 103,
+						"y": 0,
+						"w": 299,
+						"h": 128
+					}
+				},
+				{
+					"filename": "slime2.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 169,
+						"h": 130
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 169,
+						"h": 130
+					},
+					"frame": {
+						"x": 0,
+						"y": 128,
+						"w": 169,
+						"h": 130
+					}
+				},
+				{
+					"filename": "slime9.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 148,
+						"h": 150
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 148,
+						"h": 150
+					},
+					"frame": {
+						"x": 169,
+						"y": 128,
+						"w": 148,
+						"h": 150
+					}
+				},
+				{
+					"filename": "slime3.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 107,
+						"h": 153
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 107,
+						"h": 153
+					},
+					"frame": {
+						"x": 317,
+						"y": 128,
+						"w": 107,
+						"h": 153
+					}
+				},
+				{
+					"filename": "slime7.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 270,
+						"h": 166
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 270,
+						"h": 166
+					},
+					"frame": {
+						"x": 0,
+						"y": 281,
+						"w": 270,
+						"h": 166
+					}
+				},
+				{
+					"filename": "slime1.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 116,
+						"h": 177
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 116,
+						"h": 177
+					},
+					"frame": {
+						"x": 270,
+						"y": 281,
+						"w": 116,
+						"h": 177
+					}
+				},
+				{
+					"filename": "slime5.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 249,
+						"h": 182
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 249,
+						"h": 182
+					},
+					"frame": {
+						"x": 0,
+						"y": 458,
+						"w": 249,
+						"h": 182
+					}
+				},
+				{
+					"filename": "slime8.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 133,
+						"h": 215
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 133,
+						"h": 215
+					},
+					"frame": {
+						"x": 249,
+						"y": 458,
+						"w": 133,
+						"h": 215
+					}
+				},
+				{
+					"filename": "slime4.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 305,
+						"h": 270
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 305,
+						"h": 270
+					},
+					"frame": {
+						"x": 0,
+						"y": 673,
+						"w": 305,
+						"h": 270
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:13dcfce27d84b6e3cd64f23f4d0d53d6:acbdc208b772b404c43f956b36d2a512:5969a7bd39dc609f49b3bb3f3e71107a$"
+	}
+}
