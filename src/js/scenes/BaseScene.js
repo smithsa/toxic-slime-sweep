@@ -22,7 +22,7 @@ export default class BaseScene extends Scene {
 
     const optionsButtonBuilder = new HTMLElementBuilder("options-button")
       .addAttributes({"modal-id": "options-modal", color: `${CONST.OPTIONS.COLOR}`});
-    this.add.dom(this.game.config.width - 100, 100, optionsButtonBuilder.element);
+    this.add.dom(this.game.config.width - 100, 100, optionsButtonBuilder.element).setDepth(1000);
   }
 
   addGameBackground () {

@@ -2,6 +2,7 @@ import {CONST} from "../constants";
 import BaseScene from "./BaseScene";
 import slimeCoordinates from "../../data/slime_coordinates.json";
 import questions from "../../data/questions.json";
+import HTMLElementBuilder from "../utils/HTMLElementBuilder";
 
 export default class GameScene extends BaseScene {
   constructor() {
@@ -12,7 +13,9 @@ export default class GameScene extends BaseScene {
     this.slime = slimeCoordinates;
     this.slimeQueue = Object.keys(slimeCoordinates);
     this.slimeOnScreen = [];
-    this.questions = this.questionGenerator()
+    this.questionBank = questions;
+    this.questions = this.questionsGenerator();
+    this.currentQuestion = null;
   }
 
   preload() {
@@ -22,9 +25,14 @@ export default class GameScene extends BaseScene {
 
   create() {
     this.slimeQueue.sort(this.randomArrSort);
+    this.questionBank.sort(this.randomArrSort);
     this.addGameBackground();
+
     this.addSlime(5);
     this.removeSlime();
+    this.addNextQuestion();
+
+    this.addOptionsSettings();
   }
 
   addSlime(count=1) {
@@ -46,9 +54,21 @@ export default class GameScene extends BaseScene {
     }
   }
 
-  * questionGenerator () {
-    for(let question in questions) {
-      yield questions[question];
+  addNextQuestion() {
+    if (this.currentQuestion != null) {
+      this.currentQuestion.destroy();
+    }
+
+    let {value} = this.questions.next();
+    let questionElementBuilder = new HTMLElementBuilder("div", value.stem)
+      .addAttributes({class: "question__stem"});
+    this.currentQuestion = this.add.dom(895, 250, questionElementBuilder.element);
+    this.currentQuestion.setSkew(0, -0.15).setDepth(0);
+  }
+
+  * questionsGenerator () {
+    for(let question in this.questionBank) {
+      yield this.questionBank[question];
     }
 
     return;

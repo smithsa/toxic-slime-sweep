@@ -14,8 +14,8 @@ export default class IntroductionScene extends BaseScene {
 
   create() {
     this.addGameBackground();
-    this.fadeInScene();
     this.addOptionsSettings();
+    this.fadeInScene();
     const introductionSound = this.game.sound.voice.add('intro');
     introductionSound.addMarker({name: "intro_start", start: 0, duration: 3});
     introductionSound.addMarker({name: "intro_beakers_exploded", start: 3, duration: 2});
