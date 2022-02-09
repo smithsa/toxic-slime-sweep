@@ -29,70 +29,77 @@ export default class BaseScene extends Scene {
     this.add.sprite(800, 450,'background').setOrigin(0.5).setScale(1.05,1);
   }
 
-  fadeOutScene() {
-    this.cameras.main.fadeOut(1000, 0, 0, 0)
-  }
-
-  fadeInScene() {
-    this.cameras.main.fadeIn(1000, 0, 0, 0)
-  }
-
-  // TODO: play should return a promise
   play(soundObject, marker=null, config={}) {
-    if(this.game.registry.get("captionsOn")) {
-      this._playCaptionedSound(soundObject, marker, config);
-    } else{
-      this._playSound(soundObject, marker, config);
-    }
-
-    return soundObject;
+    return new Promise(function(resolve, reject) {
+      try {
+        if(this.game.registry.get("captionsOn")) {
+          this._playCaptionedSound(soundObject, marker, config).then(() => {
+            resolve(soundObject);
+          });
+        } else{
+          this._playSound(soundObject, marker, config).then(() => {
+            resolve(soundObject);
+          });
+        }
+      } catch (e) {
+        reject("An error occurred playing sound:", `${e}`);
+      }
+    }.bind(this));
   }
 
-  randomArrSort () {
-    return 0.5 - Math.random();
-  }
-
-  // TODO: should return a promise
   _playSound(soundObject, marker, config) {
     soundObject.manager.stopAll();
-    if (marker) {
-      soundObject.play(marker, config);
-      return;
-    }
+    return new Promise(function(resolve, reject) {
+      try {
+        let sound;
+        if (marker) {
+          const sound = soundObject.play(marker, config);
+          sound.on("complete", () => resolve(sound));
+        }
 
-    soundObject.play(config);
-  }
-
-  // TODO: should return a promise
-  _playCaptionedSound(soundObject, marker=null, config={}) {
-    const markers = Object.keys(soundObject.markers);
-    if(markers.length === 0) {
-      this._startCaptionedAudio(soundObject, marker, config);
-
-      soundObject.on('complete', (function() {
-        this._removeCaptions();
-        soundObject.removeAllListeners();
-      }).bind(this));
-
-      return soundObject;
-    }
-
-    // setting up the generator to play subsequent markers after the
-    // sound object has completed playing.
-    const soundMarkerGenerator = this._SoundMarkerIterator(markers);
-    soundObject.on("complete", () => {
-      const currentMarker = soundMarkerGenerator.next();
-      if (currentMarker.done) {
-        this._removeCaptions();
-        soundObject.removeAllListeners();
-      } else {
-        this._startCaptionedAudio(soundObject, currentMarker.value, config);
+        sound = soundObject.play(config);
+        sound.on("complete", () => resolve(sound));
+      } catch (e) {
+        reject("An error occurred in _playSound:", `${e}`);
       }
     });
+  }
 
-    this._startCaptionedAudio(soundObject, markers[0], config);
+  _playCaptionedSound(soundObject, marker=null, config={}) {
+    return new Promise(function (resolve, reject) {
+      try {
+        const markers = Object.keys(soundObject.markers);
+        if(markers.length === 0) {
+          this._startCaptionedAudio(soundObject, marker, config);
 
-    return soundObject;
+          soundObject.on('complete', (function() {
+            this._removeCaptions();
+            soundObject.removeAllListeners();
+            resolve(soundObject);
+          }).bind(this));
+
+          return soundObject;
+        }
+
+        // setting up the generator to play subsequent markers after the
+        // sound object has completed playing.
+        const soundMarkerGenerator = this._SoundMarkerIterator(markers);
+        soundObject.on("complete", () => {
+          const currentMarker = soundMarkerGenerator.next();
+          if (currentMarker.done) {
+            this._removeCaptions();
+            soundObject.removeAllListeners();
+            resolve(soundObject);
+          } else {
+            this._startCaptionedAudio(soundObject, currentMarker.value, config);
+          }
+        });
+
+        this._startCaptionedAudio(soundObject, markers[0], config);
+      } catch(e) {
+        reject("An error occurred in _playSound:", `${e}`);
+      }
+    }.bind(this));
   }
 
   _startCaptionedAudio(soundObject, marker=null, config={}) {
@@ -144,5 +151,9 @@ export default class BaseScene extends Scene {
     }
 
     return;
+  }
+
+  randomArrSort () {
+    return 0.5 - Math.random();
   }
 }

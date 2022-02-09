@@ -22,9 +22,9 @@ export default class TitleScene extends BaseScene {
     const playButton = this.addPlayButton();
     playButton.addEventListener("click", () => {
       const titleSound = this.game.sound.voice.add('title');
-      this.play(titleSound).on("complete", () => {
+      this.play(titleSound).finally(() => {
         this.scene.start(CONST.SCENES.INTRODUCTION);
-      })
+      });
     });
 
     this.addOptionsSettings();
