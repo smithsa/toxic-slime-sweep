@@ -1,0 +1,83 @@
+{
+	"textures": [
+		{
+			"image": "glass_atlas.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 61,
+				"h": 119
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "fx_glass3.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 59,
+						"h": 48
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 59,
+						"h": 48
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 59,
+						"h": 48
+					}
+				},
+				{
+					"filename": "fx_glass2.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 46,
+						"h": 42
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 46,
+						"h": 42
+					},
+					"frame": {
+						"x": 1,
+						"y": 51,
+						"w": 46,
+						"h": 42
+					}
+				},
+				{
+					"filename": "fx_glass1.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 39,
+						"h": 23
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 39,
+						"h": 23
+					},
+					"frame": {
+						"x": 1,
+						"y": 95,
+						"w": 39,
+						"h": 23
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:3560dc7e7e477a26322988166c691b6c:3dd207756b3132761726152e03a18095:3b89c7f554c16c55131c4d94f1c47e14$"
+	}
+}

@@ -37,6 +37,7 @@ export default class BaseScene extends Scene {
     this.cameras.main.fadeIn(1000, 0, 0, 0)
   }
 
+  // TODO: play should return a promise
   play(soundObject, marker=null, config={}) {
     if(this.game.registry.get("captionsOn")) {
       this._playCaptionedSound(soundObject, marker, config);
@@ -51,6 +52,7 @@ export default class BaseScene extends Scene {
     return 0.5 - Math.random();
   }
 
+  // TODO: should return a promise
   _playSound(soundObject, marker, config) {
     soundObject.manager.stopAll();
     if (marker) {
@@ -61,6 +63,7 @@ export default class BaseScene extends Scene {
     soundObject.play(config);
   }
 
+  // TODO: should return a promise
   _playCaptionedSound(soundObject, marker=null, config={}) {
     const markers = Object.keys(soundObject.markers);
     if(markers.length === 0) {

@@ -1,21 +1,23 @@
 import HTMLElementBuilder from "../utils/HTMLElementBuilder";
 
 export default class ButtonImage {
-  constructor(ariaLabel, imageSrc) {
+  constructor(ariaLabel, imageSrc, elementClass="") {
     this.ariaLabel = ariaLabel;
     this.imageSrc = imageSrc;
-    this.builder = this._build(this.ariaLabel, this.imageSrc);
+    this.elementClass = elementClass;
+    this.builder = this._build();
     this.element = this.builder.element;
   }
 
-  _build(ariaLabel, imgSrc) {
+  _build() {
     const buttonHtmlBuilder = new HTMLElementBuilder("button");
     buttonHtmlBuilder.addAttributes({
-      "aria-label": ariaLabel
+      "aria-label": this.ariaLabel
     }).appendElements(
       new HTMLElementBuilder("img")
         .addAttributes({
-          "src": imgSrc,
+          "src": this.imageSrc,
+          "class": this.elementClass
         }).element
     )
 

@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "slimeatlas.png",
+			"image": "slime_atlas.png",
 			"format": "RGBA8888",
 			"size": {
 				"w": 424,
