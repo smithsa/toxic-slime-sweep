@@ -35,14 +35,18 @@ export default class BaseScene extends Scene {
         if(this.game.registry.get("captionsOn")) {
           this._playCaptionedSound(soundObject, marker, config).then(() => {
             resolve(soundObject);
+          }).catch((error) => {
+            reject(error)
           });
         } else{
           this._playSound(soundObject, marker, config).then(() => {
             resolve(soundObject);
+          }).catch((error) => {
+            reject(error)
           });
         }
-      } catch (e) {
-        reject("An error occurred playing sound:", `${e}`);
+      } catch (error) {
+        reject(error);
       }
     }.bind(this));
   }
@@ -53,14 +57,14 @@ export default class BaseScene extends Scene {
       try {
         let sound;
         if (marker) {
-          const sound = soundObject.play(marker, config);
-          sound.on("complete", () => resolve(sound));
+          soundObject.play(marker, config);
+        } else {
+          soundObject.play(config);
         }
 
-        sound = soundObject.play(config);
-        sound.on("complete", () => resolve(sound));
-      } catch (e) {
-        reject("An error occurred in _playSound:", `${e}`);
+        soundObject.on("complete", () => resolve(sound));
+      } catch (error) {
+        reject( error);
       }
     });
   }
@@ -96,8 +100,8 @@ export default class BaseScene extends Scene {
         });
 
         this._startCaptionedAudio(soundObject, markers[0], config);
-      } catch(e) {
-        reject("An error occurred in _playSound:", `${e}`);
+      } catch(error) {
+        reject(error);
       }
     }.bind(this));
   }
@@ -122,7 +126,7 @@ export default class BaseScene extends Scene {
     });
   }
 
-  _addCaptions (captionKey) {
+  _addCaptions(captionKey) {
     this._removeCaptions();
     const captionHtmlElement = new HTMLElementBuilder("div");
     captionHtmlElement.addClasses("captions");
@@ -138,7 +142,7 @@ export default class BaseScene extends Scene {
     return captionHtmlElement.element;
   }
 
-  _createCaptionCueElement (cueText) {
+  _createCaptionCueElement(cueText) {
     const captionCueElement = new HTMLElementBuilder("p", cueText);
     captionCueElement.addClasses("cue");
 

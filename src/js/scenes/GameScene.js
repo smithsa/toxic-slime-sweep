@@ -17,6 +17,8 @@ export default class GameScene extends BaseScene {
     this.questions = this.questionsGenerator();
     this.currentQuestionStemElement = null;
     this.currentAnswerChoicesElement = null;
+    this.currentQuestion = null;
+    this.buttons = null
   }
 
   preload() {
@@ -56,12 +58,19 @@ export default class GameScene extends BaseScene {
   }
 
   nextQuestion() {
-    let {value} = this.questions.next();
-    this.addAnswerChoices(value.answerChoices);
-    this.addQuestionStem(value.stem)
+    this.currentQuestion = this.questions.next().value;
+    this.loadAnswerChoiceButtons(this.currentQuestion.answerChoices);
+    this.addQuestionStem(this.currentQuestion.stem);
   }
 
-  addAnswerChoices(answerChoicesList) {
+  addNewAnswerChoices (answerChoicesList) {
+    answerChoicesList.forEach((answerChoice, index) => {
+      this.buttons[index].textContent = answerChoice;
+      this.buttons[index].dataset = answerChoice;
+    });
+  }
+
+  loadAnswerChoiceButtons(answerChoicesList) {
     if (this.currentAnswerChoicesElement != null) {
       this.currentAnswerChoicesElement.destroy();
     }
@@ -71,14 +80,18 @@ export default class GameScene extends BaseScene {
       const buttonHtmlBuilder = new HTMLElementBuilder("button", `${answerChoicesList[i]}`);
       buttonHtmlBuilder.addAttributes({
         "class": "question__answer-choice",
-        "data-src": `${answerChoicesList[i]}`
+        "data-value": `${answerChoicesList[i]}`
       });
+
+      buttonHtmlBuilder.element.addEventListener("click", this.validateAnswerChoice);
       buttonElements.push(buttonHtmlBuilder.element);
     }
 
     const buttonsContainer = new HTMLElementBuilder("div")
       .addAttributes({class: "question__answer-choices"});
     buttonsContainer.appendElements(buttonElements);
+
+    this.buttons = buttonsContainer.element;
 
     this.currentAnswerChoicesElement = this.add.dom(800, 560, buttonsContainer.element);
   }
@@ -100,5 +113,9 @@ export default class GameScene extends BaseScene {
     }
 
     return;
+  }
+
+  validateAnswerChoice(event) {
+    console.log(event.target.dataset.value)
   }
 }
