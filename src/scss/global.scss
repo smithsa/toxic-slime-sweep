@@ -61,4 +61,8 @@ button {
 
 .play__btn {
   cursor: pointer;
+  transition:.1s filter ease-in-out ;
+  &:hover {
+    filter: hue-rotate(90deg);
+  }
 }

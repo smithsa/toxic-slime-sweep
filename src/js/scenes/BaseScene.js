@@ -160,4 +160,12 @@ export default class BaseScene extends Scene {
   randomArrSort () {
     return 0.5 - Math.random();
   }
+
+  fadeIn(duration) {
+    this.cameras.main.fadeIn(duration, 0, 0, 0)
+  }
+
+  fadeOut(duration) {
+    this.cameras.main.fadeOut(duration, 0, 0, 0)
+  }
 }

@@ -10,6 +10,9 @@ export default class BootScene extends BaseScene {
   }
 
   preload() {
+    this.load.audio('intro', './voice/intro.mp3');
+    this.load.audio('title', './voice/title.mp3');
+
     this.load.path = './img/';
     this.load.image('background', 'bg.jpg');
     this.load.multiatlas("beaker", "beaker_atlas.json");

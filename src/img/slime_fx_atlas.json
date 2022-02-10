@@ -1,0 +1,104 @@
+{
+	"textures": [
+		{
+			"image": "slime_fx_atlas.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 95,
+				"h": 352
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "fx_slime3.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 93,
+						"h": 116
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 93,
+						"h": 116
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 93,
+						"h": 116
+					}
+				},
+				{
+					"filename": "fx_slime2.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 80,
+						"h": 102
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 80,
+						"h": 102
+					},
+					"frame": {
+						"x": 1,
+						"y": 119,
+						"w": 80,
+						"h": 102
+					}
+				},
+				{
+					"filename": "fx_slime1.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 84,
+						"h": 88
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 84,
+						"h": 88
+					},
+					"frame": {
+						"x": 1,
+						"y": 223,
+						"w": 84,
+						"h": 88
+					}
+				},
+				{
+					"filename": "fx_slimeDot.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 38,
+						"h": 38
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 38,
+						"h": 38
+					},
+					"frame": {
+						"x": 1,
+						"y": 313,
+						"w": 38,
+						"h": 38
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:43fac894b12b5fd86aaf4d4818a14725:65f35b8e41bfd3306d46fa63fef30c1f:884e332ed2dcf4dfe558792818b15051$"
+	}
+}

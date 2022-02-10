@@ -17,8 +17,7 @@ export default class GameScene extends BaseScene {
     this.questions = this.questionsGenerator();
     this.currentQuestionStemElement = null;
     this.currentAnswerChoicesElement = null;
-    this.currentQuestion = null;
-    this.buttons = null
+    this.buttons = null;
   }
 
   preload() {
@@ -58,9 +57,19 @@ export default class GameScene extends BaseScene {
   }
 
   nextQuestion() {
-    this.currentQuestion = this.questions.next().value;
-    this.loadAnswerChoiceButtons(this.currentQuestion.answerChoices);
-    this.addQuestionStem(this.currentQuestion.stem);
+    let {value} = this.questions.next();
+    this.loadAnswerChoiceButtons(value.answerChoices);
+    this.addQuestionStem(value.stem);
+  }
+
+  validateAnswerChoice(event) {
+    console.log(this.questions);
+
+    // if(`${event.target.dataset.value}` === this.currentQuestion.answer) {
+    //   console.log("correct!");
+    // } else {
+    //   console.log("wrong!");
+    // }
   }
 
   addNewAnswerChoices (answerChoicesList) {
@@ -113,9 +122,5 @@ export default class GameScene extends BaseScene {
     }
 
     return;
-  }
-
-  validateAnswerChoice(event) {
-    console.log(event.target.dataset.value)
   }
 }

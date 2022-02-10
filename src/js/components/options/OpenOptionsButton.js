@@ -6,6 +6,7 @@ export default class OptionsModal extends HTMLElement {
     this.shadowRoot.innerHTML = `
       <style>
         button {
+            --button-primary-color: "darkgray";
             --button-size: 90px;
             font-size: 90px;
             font-weight: bold;
@@ -19,6 +20,22 @@ export default class OptionsModal extends HTMLElement {
             border-color: rgba(0, 0, 0, .55);
             justify-content: center;
             align-content: center;
+            transition: .1s background-color ease-in-out;
+        }
+
+        svg {
+            fill: var(--button-primary-color);
+            transition: .1s fill ease-in-out;
+        }
+
+        button:focus,
+        button:hover {
+            background-color: var(--button-primary-color);
+        }
+
+        button:focus svg,
+        button:hover svg{
+            fill: #ffffff;
         }
       </style>
       <button aria-label="Game Options">
@@ -76,7 +93,8 @@ export default class OptionsModal extends HTMLElement {
         this.modal = document.getElementById(newValue);
         break;
       case "color":
-        this.icon.setAttribute("fill", newValue)
+        // this.icon.setAttribute("fill", newValue);
+        this.buttonElement.style.setProperty("--button-primary-color", newValue);
         break;
       default:
         break;
