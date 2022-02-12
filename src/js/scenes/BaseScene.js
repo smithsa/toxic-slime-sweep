@@ -12,6 +12,19 @@ export default class BaseScene extends Scene {
     this.captionBottomOffset = 80;
   }
 
+  setSlimeState(slimeConfig) {
+    this.game.registry.set("slime", slimeConfig.slime);
+    this.game.registry.set("slimeQueue", slimeConfig.slimeQueue);
+    this.game.registry.set("slimeOnScreen", slimeConfig.slimeOnScreen);
+  }
+
+  getSlimeState() {
+    let slime = this.game.registry.get("slime");
+    let slimeQueue = this.game.registry.get("slimeQueue");
+    let slimeOnScreen = this.game.registry.get("slimeOnScreen");
+    return {slime, slimeQueue, slimeOnScreen};
+  }
+
   addOptionsSettings() {
     const optionsModalBuilder = new HTMLElementBuilder("options-modal")
       .addAttributes({"open": false, "id": "options-modal", "color": `${CONST.OPTIONS.COLOR}`});
@@ -155,17 +168,5 @@ export default class BaseScene extends Scene {
     }
 
     return;
-  }
-
-  randomArrSort () {
-    return 0.5 - Math.random();
-  }
-
-  fadeIn(duration) {
-    this.cameras.main.fadeIn(duration, 0, 0, 0)
-  }
-
-  fadeOut(duration) {
-    this.cameras.main.fadeOut(duration, 0, 0, 0)
   }
 }

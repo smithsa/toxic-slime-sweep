@@ -8,8 +8,7 @@ export const CONST = {
   },
   CAPTIONS_JSON: "Captions",
   CONTENT : {
-    TITLE: "Toxic Slime Sweep",
-    PLAY_BUTTON_TEXT: "Play"
+    TITLE: "Toxic Slime Sweep"
   },
   OPTIONS : {
     COLOR: "#0f4863",

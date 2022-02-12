@@ -47,7 +47,7 @@ export default class TitleScene extends BaseScene {
   }
 
   addPlayButton() {
-    const playButtonHtmlBuilder = new ButtonImage(CONST.CONTENT.PLAY_BUTTON_TEXT, "./img/btn_play.png", "play__btn");
+    const playButtonHtmlBuilder = new ButtonImage("Play Game", "./img/btn_play.png", "play__btn");
     const gameObject = this.add.dom(this.game.config.width/2 - 130, this.game.config.height/2 + 50, playButtonHtmlBuilder.element);
 
     return {element: playButtonHtmlBuilder.element, gameObject};
@@ -106,9 +106,11 @@ export default class TitleScene extends BaseScene {
     return this.tweens.add({
       targets: slimeObject,
       y: floatDelta,
-      loop: -1,
+      loop: 250,
       duration: duration,
       ease: 'Sine.easeInOut',
+      scaleY: slimeObject.scaleY - 0.05,
+      scaleX: slimeObject.scaleX - 0.05,
       easeParams: [],
       yoyo: true,
       onUpdate: function(){
@@ -116,6 +118,6 @@ export default class TitleScene extends BaseScene {
           slimeObject.setRotation(slimeObject.rotation += rotationDelta);
         }
       }
-    })
+    });
   }
 }

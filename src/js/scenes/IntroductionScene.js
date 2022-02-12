@@ -14,8 +14,6 @@ export default class IntroductionScene extends BaseScene {
   preload() {
     this.glassParticles = this.add.particles("glass");
     this.slimeSplatterParticles = this.add.particles("splat");
-
-    this.load.audio('title', './voice/title.mp3');
   }
 
   async create() {
@@ -30,29 +28,95 @@ export default class IntroductionScene extends BaseScene {
     introductionSound.addMarker({name: "intro_slime_expanding", start: 7.9, duration: 5.3});
     introductionSound.addMarker({name: "intro_end", start: 13.2, duration: 2});
 
-    // TODO get rid of beaker
-    // TODO fire at one at a time sequentially
-    // TODO after glass shatters, the slime shatters do it right before the glass, splat like the glass
-    // TODO a quarter of a second have the slime fade in, all at the same time then if time one at a time
-
-    // TODO use timedEvent
-    // timedEvent = this.time.delayedCall(3000, onEvent, [], this);
-    // slime
-    // doors are a frame animation
-    // 1. warning lights go off (warning on board)
-    // 2. doors close (10 frame per second)
-    // 3. splat happens
 
     await this.explodeBeaker(beaker1, 1200, 700);
     await this.explodeBeaker(beaker2, 575, 600);
     await this.explodeBeaker(beaker3, 290, 645);
-    // this.play(introductionSound).finally(() => {
-    //   this.scene.start(CONST.SCENES.GAME);
-    // });
+
+    this.setOffAlarm();
+
+    const introSoundTimedEvent = this.time.delayedCall(500, () => {
+      this.play(introductionSound).finally(() => {
+        this.scene.launch(CONST.SCENES.GAME);
+      });
+
+      introSoundTimedEvent.destroy();
+    }, [], this);
+
+    for(let i=0; i < 6; i++) {
+      await this.addSlime();
+    }
+
+    await this.closeDoor("leftDoor1", 105, 480, [
+      { key: "leftDoor1" },
+      { key: "leftDoor2" },
+      { key: "leftDoor3" },
+      { key: "leftDoor4", duration: 50 },
+    ]);
+
+    await this.closeDoor("rightDoor1", 1278, 485, [
+      { key: "rightDoor1" },
+      { key: "rightDoor2" },
+      { key: "rightDoor3" },
+      { key: "rightDoor4", duration: 50 },
+    ]);
+
   }
 
-  async setOffAlarms(){
+  async addSlime() {
+    return new Promise((resolve, reject) => {
+        let {slime, slimeQueue, slimeOnScreen} = this.getSlimeState();
 
+        let slimeKey = slimeQueue.pop();
+        slimeOnScreen.push(slimeKey);
+
+        const slimeSprite =
+          this.add.sprite(slime[slimeKey]["x"],
+            slime[slimeKey]["y"],
+            "slime", `${slimeKey}.png`);
+
+        // slimeSprite.setScale(.6);
+        slimeSprite.setAlpha(0);
+        slimeSprite.setDepth(1);
+        this.expandSlimeTween(slimeSprite).finally(() => {
+          resolve(slimeSprite);
+        });
+        slime[slimeKey]["object"] = slimeSprite;
+
+        this.setSlimeState({slime, slimeQueue, slimeOnScreen});
+    });
+  }
+
+  expandSlimeTween(slimeSprite) {
+    return new Promise((resolve, reject) => {
+      this.tweens.add({
+        targets: slimeSprite,
+        loop: 0,
+        duration: 1500,
+        scaleX: {from: .5, to: 1 },
+        scaleY: {from: .5, to: 1 },
+        alpha: {from: 0, to: 1 },
+        ease: "Linear",
+        yoyo: false,
+        onComplete: () => {
+          resolve(true);
+        }
+      });
+    });
+  }
+
+  setOffAlarm() {
+    const alarm = this.add.image(1250, 190, "alarm").setDepth(2);
+    this.tweens.add({
+      targets: alarm,
+      loop: 3,
+      duration: 2000,
+      scaleX: 2,
+      scaleY: 2,
+      alpha: { from: 0, to: 1 },
+      ease: "Linear",
+      yoyo: true
+    });
   }
 
   async explodeBeaker(beaker, x, y) {
@@ -70,6 +134,23 @@ export default class IntroductionScene extends BaseScene {
       this.time.delayedCall(200, () => {
         beaker.destroy();
       }, [beaker], this);
+    });
+  }
+
+  async closeDoor(initalImageKey, imageX, imageY, frames) {
+    return new Promise((resolve, reject) => {
+      const closeDoorAnimation = this.anims.create({
+        key: "closeDoor",
+        frames: frames,
+        frameRate: 8,
+        repeat: 0
+      });
+
+      const door = this.add.sprite(imageX, imageY, initalImageKey).play("closeDoor");
+      door.once("animationcomplete", function(){
+        closeDoorAnimation.destroy();
+        resolve(true);
+      }, this);
     });
   }
 
@@ -92,12 +173,12 @@ export default class IntroductionScene extends BaseScene {
     return this.slimeSplatterParticles.createEmitter({
       frame: ["fx_splat1.png", "fx_splat2.png", "fx_splat3.png", "fx_splat4.png"],
       speed: {min: 100, max: 300},
-      lifespan: 800,
+      lifespan: 1000,
       blendMode: "ADD",
       frequency: 15,
-      maxParticles: 10,
-      scale: {start: .25, end: 0, random: true},
-      alpha: {start:1, end: 0},
+      maxParticles: 15,
+      scale: {start: .5, end: 0},
+      alpha: {start:0, end: 1},
       rotate: {start:0, end: 90, random: true},
       on: false
     });

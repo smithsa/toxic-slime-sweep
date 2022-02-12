@@ -1,4 +1,5 @@
 import {CANVAS, Scale, Sound, Game} from 'phaser';
+import slimeCoordinates from "../data/slime_coordinates.json";
 import IntroductionScene from "./scenes/IntroductionScene";
 import BootScene from './scenes/BootScene';
 import TitleScene from './scenes/TitleScene';
@@ -34,5 +35,10 @@ window.esparkGame = new Game(gameConfig);
 
 window.esparkGame.registry.set({
   backgroundMusicOn: true,
-  captionsOn: true
+  captionsOn: true,
+  slime: slimeCoordinates,
+  slimeQueue: Object.keys(slimeCoordinates).sort(() => {
+    return 0.5 - Math.random()
+  }),
+  slimeOnScreen: []
 });

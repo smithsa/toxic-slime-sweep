@@ -1,8 +1,8 @@
 import {CONST} from "../constants";
 import BaseScene from "./BaseScene";
-import slimeCoordinates from "../../data/slime_coordinates.json";
 import questions from "../../data/questions.json";
 import HTMLElementBuilder from "../utils/HTMLElementBuilder";
+import ButtonImage from "../components/ButtonImage";
 
 export default class GameScene extends BaseScene {
   constructor() {
@@ -10,67 +10,77 @@ export default class GameScene extends BaseScene {
       key: CONST.SCENES.GAME
     });
 
-    this.slime = slimeCoordinates;
-    this.slimeQueue = Object.keys(slimeCoordinates);
-    this.slimeOnScreen = [];
     this.questionBank = questions;
     this.questions = this.questionsGenerator();
     this.currentQuestionStemElement = null;
     this.currentAnswerChoicesElement = null;
     this.buttons = null;
+    this.instructionsSound = null;
+    this.instructionsButton = null;
   }
 
   preload() {
-    this.load.path = './img/';
-    this.load.multiatlas("slime", "./slime_atlas.json");
   }
 
-  create() {
-    this.slimeQueue.sort(this.randomArrSort);
-    this.questionBank.sort(this.randomArrSort);
-    this.addGameBackground();
+  async create() {
+    // TODO only take 10 from the bank
+    this.questionBank.sort(() => {
+      return 0.5 - Math.random()
+    });
 
-    this.addSlime(4);
-    // this.removeSlime();
-    this.nextQuestion();
+    const instructionsButtonHtmlBuilder = new ButtonImage("Replay Instructions", "./img/btn_sound.png", "sound__btn");
 
-    this.addOptionsSettings();
-  }
+    this.instructionsSound = this.game.sound.voice.add('instructions');
 
-  addSlime(count=1) {
-    for (let i = 0; i < count; i++) {
-      let slimeKey = this.slimeQueue.pop();
-      this.slimeOnScreen.push(slimeKey);
-      this.slime[slimeKey]["object"] =
-        this.add.image(this.slime[slimeKey]["x"],
-          this.slime[slimeKey]["y"],
-          "slime", `${slimeKey}.png`);
-    }
-  }
-
-  removeSlime(count=1) {
-    for (let i = 0; i < count; i++) {
-      let slimeKey = this.slimeOnScreen.pop();
-      this.slimeQueue.push(slimeKey);
-      this.slime[slimeKey]["object"].destroy();
-    }
-  }
-
-  nextQuestion() {
     let {value} = this.questions.next();
-    this.loadAnswerChoiceButtons(value.answerChoices);
-    this.addQuestionStem(value.stem);
+    await this.addQuestionStem(value.stem);
+    const instructionsSoundTimedEvent = this.time.delayedCall(1000, () => {
+      this.playInstructions().finally(function () {
+        this.loadAnswerChoiceButtons(value.answerChoices);
+        this.instructionsButton = this.add.dom(1380, 105, instructionsButtonHtmlBuilder.element);
+      }.bind(this))
+
+      instructionsSoundTimedEvent.destroy();
+    }, [], this);
+
   }
 
-  validateAnswerChoice(event) {
-    console.log(this.questions);
-
-    // if(`${event.target.dataset.value}` === this.currentQuestion.answer) {
-    //   console.log("correct!");
-    // } else {
-    //   console.log("wrong!");
-    // }
+  playInstructions() {
+    return new Promise(function(resolve, reject) {
+      try {
+        this.play(this.instructionsSound).finally(() => {
+          resolve(true);
+        });
+      } catch (error) {
+        reject(error);
+      }
+    }.bind(this));
   }
+
+  // nextQuestion() {
+  //   let {value} = this.questions.next();
+  //   this.loadAnswerChoiceButtons(value.answerChoices);
+  //   // await this.addQuestionStem(value.stem);
+  //
+  // }
+
+  // removeSlime(count=1) {
+  //   for (let i = 0; i < count; i++) {
+  //     let slimeKey = this.slimeOnScreen.pop();
+  //     this.slimeQueue.push(slimeKey);
+  //     this.slime[slimeKey]["object"].alpha = 0;
+  //   }
+  // }
+
+  // validateAnswerChoice(event) {
+  //   console.log(this.questions);
+  //
+  //   // if(`${event.target.dataset.value}` === this.currentQuestion.answer) {
+  //   //   console.log("correct!");
+  //   // } else {
+  //   //   console.log("wrong!");
+  //   // }
+  // }
 
   addNewAnswerChoices (answerChoicesList) {
     answerChoicesList.forEach((answerChoice, index) => {
@@ -97,7 +107,7 @@ export default class GameScene extends BaseScene {
     }
 
     const buttonsContainer = new HTMLElementBuilder("div")
-      .addAttributes({class: "question__answer-choices"});
+      .addAttributes({class: "question__answer-choices", style: "opacity: 0"});
     buttonsContainer.appendElements(buttonElements);
 
     this.buttons = buttonsContainer.element;
@@ -106,14 +116,35 @@ export default class GameScene extends BaseScene {
   }
 
   addQuestionStem(questionStem) {
-    if (this.currentQuestionStemElement != null) {
-      this.currentQuestionStemElement.destroy();
-    }
+    return new Promise((function(resolve, reject){
+      let swapQuestionDelay = 300;
+      try {
+        if (this.currentQuestionStemElement != null) {
+          this.tweens.add({
+            targets: this.currentQuestionStemElement,
+            alpha: { from: 1, to: 0 },
+            duration: swapQuestionDelay
+          });
+          this.currentQuestionStemElement.destroy();
+        }
 
-    let questionElementBuilder = new HTMLElementBuilder("div", questionStem)
-      .addAttributes({class: "question__stem"});
-    this.currentQuestionStemElement = this.add.dom(895, 250, questionElementBuilder.element);
-    this.currentQuestionStemElement.setSkew(0, -0.15).setDepth(0);
+        let questionElementBuilder = new HTMLElementBuilder("div", questionStem)
+          .addAttributes({class: "question__stem"});
+        this.currentQuestionStemElement = this.add.dom(895, 250, questionElementBuilder.element);
+        this.currentQuestionStemElement.setSkew(0, -0.15).setDepth(-1).setAlpha(0);
+        this.tweens.add({
+          targets: this.currentQuestionStemElement,
+          alpha: { from: 0, to: 1 },
+          duration: 500,
+          delay: swapQuestionDelay + 100,
+          onComplete: () => {
+            resolve(true);
+          }
+        });
+      } catch (error) {
+        reject(error);
+      }
+    }).bind(this));
   }
 
   * questionsGenerator() {
