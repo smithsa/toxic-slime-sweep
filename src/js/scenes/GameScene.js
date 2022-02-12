@@ -16,7 +16,7 @@ export default class GameScene extends BaseScene {
     this.currentAnswerChoicesElement = null;
     this.buttons = null;
     this.instructionsSound = null;
-    this.instructionsButton = null;
+    this.currentAnswer = null;
   }
 
   preload() {
@@ -36,12 +36,14 @@ export default class GameScene extends BaseScene {
     this.instructionsSound.addMarker({name: "instruct_answer_quickly", start: 2.6, duration: 3});
 
     let {value} = this.questions.next();
+    this.currentAnswer = value.answer;
     await this.addQuestionStem(value.stem);
+
     const instructionsSoundTimedEvent = this.time.delayedCall(1000, () => {
       this.playInstructions().finally(function () {
         this.loadAnswerChoiceButtons(value.answerChoices);
         this.add.dom(1380, 105, instructionsButtonHtmlBuilder.element);
-      }.bind(this))
+      }.bind(this));
 
       instructionsSoundTimedEvent.destroy();
     }, [], this);
@@ -67,15 +69,13 @@ export default class GameScene extends BaseScene {
   //   }
   // }
 
-  // validateAnswerChoice(event) {
-  //   console.log(this.questions);
-  //
-  //   // if(`${event.target.dataset.value}` === this.currentQuestion.answer) {
-  //   //   console.log("correct!");
-  //   // } else {
-  //   //   console.log("wrong!");
-  //   // }
-  // }
+  validateAnswerChoice(event) {
+    if(event.target.dataset.value == this.currentAnswer) {
+      console.log("correct!");
+    } else {
+      console.log("wrong!");
+    }
+  }
 
   addNewAnswerChoices (answerChoicesList) {
     answerChoicesList.forEach((answerChoice, index) => {
@@ -97,7 +97,7 @@ export default class GameScene extends BaseScene {
         "data-value": `${answerChoicesList[i]}`
       });
 
-      buttonHtmlBuilder.element.addEventListener("click", this.validateAnswerChoice);
+      buttonHtmlBuilder.element.addEventListener("click", this.validateAnswerChoice.bind(this));
       buttonElements.push(buttonHtmlBuilder.element);
     }
 
