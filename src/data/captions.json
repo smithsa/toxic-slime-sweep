@@ -4,5 +4,7 @@
   "intro_beakers_exploded": "all the beakers exploded",
   "intro_slime_everywhere": "and spilled toxic slime everywhere",
   "intro_slime_expanding": "the slime is expanding quickly, solve the multiplication problems to clean up the slime",
-  "intro_end": "and save the laboratory!"
+  "intro_end": "and save the laboratory!",
+  "instruct_look": "Look at the problem, click on an answer",
+  "instruct_answer_quickly": "Answer quickly, or the slime will multiply"
 }

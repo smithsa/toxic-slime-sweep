@@ -29,15 +29,18 @@ export default class GameScene extends BaseScene {
     });
 
     const instructionsButtonHtmlBuilder = new ButtonImage("Replay Instructions", "./img/btn_sound.png", "sound__btn");
+    instructionsButtonHtmlBuilder.element.addEventListener("click", this.playInstructions.bind(this));
 
     this.instructionsSound = this.game.sound.voice.add('instructions');
+    this.instructionsSound.addMarker({name: "instruct_look", start: 0, duration: 2.5});
+    this.instructionsSound.addMarker({name: "instruct_answer_quickly", start: 2.6, duration: 3});
 
     let {value} = this.questions.next();
     await this.addQuestionStem(value.stem);
     const instructionsSoundTimedEvent = this.time.delayedCall(1000, () => {
       this.playInstructions().finally(function () {
         this.loadAnswerChoiceButtons(value.answerChoices);
-        this.instructionsButton = this.add.dom(1380, 105, instructionsButtonHtmlBuilder.element);
+        this.add.dom(1380, 105, instructionsButtonHtmlBuilder.element);
       }.bind(this))
 
       instructionsSoundTimedEvent.destroy();
@@ -46,15 +49,7 @@ export default class GameScene extends BaseScene {
   }
 
   playInstructions() {
-    return new Promise(function(resolve, reject) {
-      try {
-        this.play(this.instructionsSound).finally(() => {
-          resolve(true);
-        });
-      } catch (error) {
-        reject(error);
-      }
-    }.bind(this));
+    return this.play(this.instructionsSound);
   }
 
   // nextQuestion() {

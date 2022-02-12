@@ -28,7 +28,6 @@ export default class IntroductionScene extends BaseScene {
     introductionSound.addMarker({name: "intro_slime_expanding", start: 7.9, duration: 5.3});
     introductionSound.addMarker({name: "intro_end", start: 13.2, duration: 2});
 
-
     await this.explodeBeaker(beaker1, 1200, 700);
     await this.explodeBeaker(beaker2, 575, 600);
     await this.explodeBeaker(beaker3, 290, 645);
