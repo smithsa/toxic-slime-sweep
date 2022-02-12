@@ -63,6 +63,6 @@ button {
   cursor: pointer;
   transition:.1s filter ease-in-out ;
   &:hover {
-    filter: hue-rotate(90deg);
+    filter: hue-rotate(100deg);
   }
 }

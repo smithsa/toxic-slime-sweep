@@ -17,6 +17,8 @@ export default class BootScene extends BaseScene {
     this.load.image('background', 'bg.jpg');
     this.load.multiatlas("beaker", "beaker_atlas.json");
     this.load.multiatlas("glass", "glass_atlas.json");
+    this.load.multiatlas("splat", "splat_atlas.json");
+    this.load.multiatlas("floatingSlime", "slime_fx_atlas.json");
   }
 
   create() {

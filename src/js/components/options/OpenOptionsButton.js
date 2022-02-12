@@ -28,12 +28,10 @@ export default class OptionsModal extends HTMLElement {
             transition: .1s fill ease-in-out;
         }
 
-        button:focus,
         button:hover {
             background-color: var(--button-primary-color);
         }
 
-        button:focus svg,
         button:hover svg{
             fill: #ffffff;
         }
