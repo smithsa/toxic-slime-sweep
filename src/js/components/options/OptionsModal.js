@@ -73,11 +73,16 @@ export default class OptionsModal extends HTMLElement {
             padding: 10px 30px;
             background: var(--primary-color);
             color: #fff;
-            border: none;
+            border: 5px solid var(--primary-color);
             box-shadow: none;
             letter-spacing: 1px;
             font-weight: bold;
-            border: 3px solid #ffffff;
+            transition: .2s background ease-in;
+         }
+         .esg-modal__close:hover,
+         .esg-modal__close:focus {
+            background: #ffffff;
+            color: var(--primary-color);
          }
 
          .esg-modal[aria-hidden="false"] {

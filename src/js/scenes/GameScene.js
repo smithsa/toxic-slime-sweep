@@ -18,7 +18,6 @@ export default class GameScene extends BaseScene {
     this.currentQuestionStemElement = null;
     this.currentAnswerChoicesElement = null;
     this.buttons = null;
-    this.buttonsContainerElement = null;
     this.instructionsSound = null;
     this.currentAnswer = null;
     this.currentQuestionAttempts = 0;
@@ -40,7 +39,7 @@ export default class GameScene extends BaseScene {
     this.instructionsSound = this.game.sound.voice.add('instructions');
     this.instructionsSound.addMarker({name: "instruct_look", start: 0, duration: 2.5});
     this.instructionsSound.addMarker({name: "instruct_answer_quickly", start: 2.6, duration: 3});
-    this.addAnswerChoiceResponseSounds();
+    this.loadAnswerChoiceResponseSounds();
 
     let {value} = this.questions.next();
     this.currentAnswer = value.answer;
@@ -57,7 +56,15 @@ export default class GameScene extends BaseScene {
 
   }
 
+  delayedNextQuestion(delay) {
+    const nextQuestionTimedEvent = this.time.delayedCall(delay, function() {
+      this.nextQuestion();
+      nextQuestionTimedEvent.destroy();
+    }, [], this);
+  }
+
   async nextQuestion() {
+    this.resetCorrectAttributeValueOnButtons();
     let {value, done} = this.questions.next();
     if(done) {
       console.warn("No more questions exist to continue");
@@ -70,37 +77,31 @@ export default class GameScene extends BaseScene {
   }
 
   async validateAnswerChoice(event) {
-    this.resetCorrectValueOnButtons();
+    this.resetCorrectAttributeValueOnButtons();
 
     if(event.target.dataset.value == this.currentAnswer) {
       event.target.dataset.correct = true;
+      this.currentQuestionAttempts = 0;
       this.playRandomSound(this.correctSounds);
       await this.removeSlime();
-      await this.nextQuestion();
-      this.resetCorrectValueOnButtons();
+      this.delayedNextQuestion(2000);
     } else {
-      // TODO move out into a separate function
+      this.shakeAnswerChoices();
+
       event.target.dataset.correct = false;
-      this.tweens.add({
-        targets: this.currentAnswerChoicesElement,
-        loop: 1,
-        duration: 100,
-        x: {from: this.currentAnswerChoicesElement.x - 3, to: this.currentAnswerChoicesElement.x + 3},
-        ease: "Quad.easeInOut",
-        yoyo: true
-      });
 
       if(this.currentQuestionAttempts === (this.maxAttempts - 1)) {
         this.currentQuestionAttempts = 0;
         this.playRandomSound(this.solutionsSounds);
-        console.log("MAX ATTEMPTS REACHED");
+        this.revealCorrectAnswer();
+        this.delayedNextQuestion(3000);
         return;
       };
 
       this.currentQuestionAttempts++;
-      this.playRandomSound(this.wrongSounds);
-
-      this.addSlime();
+      await this.playRandomSound(this.wrongSounds);
+      await this.addSlime();
+      this.resetCorrectAttributeValueOnButtons();
     }
   }
 
@@ -176,7 +177,7 @@ export default class GameScene extends BaseScene {
     });
   }
 
-  addAnswerChoiceResponseSounds() {
+  loadAnswerChoiceResponseSounds() {
     for(let i=1; i < 6; i++) {
       this.correctSounds.push(this.game.sound.voice.add(`correct${i}`));
     }
@@ -260,7 +261,27 @@ export default class GameScene extends BaseScene {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-  resetCorrectValueOnButtons() {
+  resetCorrectAttributeValueOnButtons() {
     this.buttons.forEach((button) => button.dataset.correct = "");
+  }
+
+  revealCorrectAnswer() {
+    for(let i = 0; i < this.buttons.length; i++) {
+      if(this.currentAnswer == this.buttons[i].textContent) {
+        this.buttons[i].dataset.correct="true";
+        return;
+      }
+    }
+  }
+
+  shakeAnswerChoices() {
+    this.tweens.add({
+      targets: this.currentAnswerChoicesElement,
+      loop: 1,
+      duration: 100,
+      x: {from: this.currentAnswerChoicesElement.x - 3, to: this.currentAnswerChoicesElement.x + 3},
+      ease: "Quad.easeInOut",
+      yoyo: true
+    });
   }
 }
