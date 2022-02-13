@@ -13,6 +13,16 @@ export default class BootScene extends BaseScene {
     this.load.audio('intro', './voice/intro.mp3');
     this.load.audio('title', './voice/title.mp3');
     this.load.audio('instructions', './voice/instructions.mp3');
+    this.load.audio("wrong1", "./voice/wrong1.mp3");
+    this.load.audio("wrong2", "./voice/wrong2.mp3");
+    this.load.audio("wrong3", "./voice/wrong3.mp3");
+    this.load.audio("correct1", "./voice/correct1.mp3");
+    this.load.audio("correct2", "./voice/correct2.mp3");
+    this.load.audio("correct3", "./voice/correct3.mp3");
+    this.load.audio("correct4", "./voice/correct4.mp3");
+    this.load.audio("correct5", "./voice/correct5.mp3");
+    this.load.audio("solution1", "./voice/solution1.mp3");
+    this.load.audio("solution2", "./voice/solution2.mp3");
 
     this.load.path = './img/';
     this.load.image('background', 'bg.jpg');
@@ -25,6 +35,7 @@ export default class BootScene extends BaseScene {
     this.load.image('rightDoor2', "right-door-2.png");
     this.load.image('rightDoor3', "right-door-3.png");
     this.load.image('rightDoor4', "right-door-4.png");
+    this.load.image('replayButton', "btn_replay.png");
 
     this.load.multiatlas("beaker", "beaker_atlas.json");
     this.load.multiatlas("glass", "glass_atlas.json");

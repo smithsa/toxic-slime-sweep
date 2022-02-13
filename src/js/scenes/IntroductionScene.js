@@ -28,6 +28,8 @@ export default class IntroductionScene extends BaseScene {
     introductionSound.addMarker({name: "intro_slime_expanding", start: 7.9, duration: 5.3});
     introductionSound.addMarker({name: "intro_end", start: 13.2, duration: 2});
 
+    this.addSlimeObjects();
+
     await this.explodeBeaker(beaker1, 1200, 700);
     await this.explodeBeaker(beaker2, 575, 600);
     await this.explodeBeaker(beaker3, 290, 645);
@@ -43,7 +45,7 @@ export default class IntroductionScene extends BaseScene {
     }, [], this);
 
     for(let i=0; i < 6; i++) {
-      await this.addSlime();
+      await this.addSlimeToScreen();
     }
 
     await this.closeDoor("leftDoor1", 105, 480, [
@@ -62,21 +64,29 @@ export default class IntroductionScene extends BaseScene {
 
   }
 
-  async addSlime() {
+  addSlimeObjects() {
+    let {slime, slimeQueue, slimeOnScreen} = this.getSlimeState();
+    slimeQueue.map((slimeKey) => {
+      const slimeSprite = this.add.sprite(slime[slimeKey]["x"],
+          slime[slimeKey]["y"],
+          "slime", `${slimeKey}.png`);
+
+      slime[slimeKey]["object"] = slimeSprite;
+
+      slimeSprite.setAlpha(0);
+      slimeSprite.setDepth(1);
+    });
+    this.setSlimeState({slime, slimeQueue, slimeOnScreen});
+  }
+
+  async addSlimeToScreen() {
     return new Promise((resolve, reject) => {
         let {slime, slimeQueue, slimeOnScreen} = this.getSlimeState();
 
         let slimeKey = slimeQueue.pop();
         slimeOnScreen.push(slimeKey);
+        const slimeSprite = slime[slimeKey]["object"];
 
-        const slimeSprite =
-          this.add.sprite(slime[slimeKey]["x"],
-            slime[slimeKey]["y"],
-            "slime", `${slimeKey}.png`);
-
-        // slimeSprite.setScale(.6);
-        slimeSprite.setAlpha(0);
-        slimeSprite.setDepth(1);
         this.expandSlimeTween(slimeSprite).finally(() => {
           resolve(slimeSprite);
         });
@@ -91,7 +101,7 @@ export default class IntroductionScene extends BaseScene {
       this.tweens.add({
         targets: slimeSprite,
         loop: 0,
-        duration: 1500,
+        duration: 1300,
         scaleX: {from: .5, to: 1 },
         scaleY: {from: .5, to: 1 },
         alpha: {from: 0, to: 1 },

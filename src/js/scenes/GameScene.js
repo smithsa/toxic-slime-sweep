@@ -10,13 +10,19 @@ export default class GameScene extends BaseScene {
       key: CONST.SCENES.GAME
     });
 
+    this.correctSounds = [];
+    this.wrongSounds = [];
+    this.solutionsSounds = [];
     this.questionBank = questions;
     this.questions = this.questionsGenerator();
     this.currentQuestionStemElement = null;
     this.currentAnswerChoicesElement = null;
     this.buttons = null;
+    this.buttonsContainerElement = null;
     this.instructionsSound = null;
     this.currentAnswer = null;
+    this.currentQuestionAttempts = 0;
+    this.maxAttempts = 2;
   }
 
   preload() {
@@ -34,6 +40,7 @@ export default class GameScene extends BaseScene {
     this.instructionsSound = this.game.sound.voice.add('instructions');
     this.instructionsSound.addMarker({name: "instruct_look", start: 0, duration: 2.5});
     this.instructionsSound.addMarker({name: "instruct_answer_quickly", start: 2.6, duration: 3});
+    this.addAnswerChoiceResponseSounds();
 
     let {value} = this.questions.next();
     this.currentAnswer = value.answer;
@@ -50,38 +57,137 @@ export default class GameScene extends BaseScene {
 
   }
 
+  async nextQuestion() {
+    let {value, done} = this.questions.next();
+    if(done) {
+      console.warn("No more questions exist to continue");
+      return;
+    }
+
+    this.currentAnswer = value.answer;
+    this.addNewAnswerChoices(value.answerChoices);
+    await this.addQuestionStem(value.stem);
+  }
+
+  async validateAnswerChoice(event) {
+    this.resetCorrectValueOnButtons();
+
+    if(event.target.dataset.value == this.currentAnswer) {
+      event.target.dataset.correct = true;
+      this.playRandomSound(this.correctSounds);
+      await this.removeSlime();
+      await this.nextQuestion();
+      this.resetCorrectValueOnButtons();
+    } else {
+      // TODO move out into a separate function
+      event.target.dataset.correct = false;
+      this.tweens.add({
+        targets: this.currentAnswerChoicesElement,
+        loop: 1,
+        duration: 100,
+        x: {from: this.currentAnswerChoicesElement.x - 3, to: this.currentAnswerChoicesElement.x + 3},
+        ease: "Quad.easeInOut",
+        yoyo: true
+      });
+
+      if(this.currentQuestionAttempts === (this.maxAttempts - 1)) {
+        this.currentQuestionAttempts = 0;
+        this.playRandomSound(this.solutionsSounds);
+        console.log("MAX ATTEMPTS REACHED");
+        return;
+      };
+
+      this.currentQuestionAttempts++;
+      this.playRandomSound(this.wrongSounds);
+
+      this.addSlime();
+    }
+  }
+
+  addSlime() {
+    return new Promise(function(resolve, reject) {
+      try {
+        let {slime, slimeQueue, slimeOnScreen} = this.getSlimeState();
+        let slimeKey = slimeQueue.pop();
+        slimeOnScreen.push(slimeKey);
+        const slimeToAdd = slime[slimeKey]["object"];
+
+        this.tweens.add({
+          targets: slimeToAdd,
+          loop: 0,
+          duration: 1500,
+          scaleX: {from: 0, to: 1},
+          scaleY: {from: 0, to: 1},
+          alpha: {from: 0, to: 1},
+          ease: "Linear",
+          onComplete: () => {
+            resolve(true);
+          }
+        });
+
+        this.setSlimeState({slime, slimeQueue, slimeOnScreen});
+      } catch (error) {
+        reject(error);
+      }
+    }.bind(this));
+  }
+
+  removeSlime() {
+    return new Promise(function(resolve, reject) {
+      try {
+        let {slime, slimeQueue, slimeOnScreen} = this.getSlimeState();
+        let slimeKey = slimeOnScreen.pop();
+        slimeQueue.push(slimeKey);
+        const slimeToRemove = slime[slimeKey]["object"];
+
+        this.tweens.add({
+          targets: slimeToRemove,
+          loop: 0,
+          duration: 1000,
+          scaleX: {from: 1, to: 0},
+          scaleY: {from: 1, to: 0},
+          alpha: {from: 1, to: 0},
+          ease: "Linear",
+          onComplete: () => {
+            resolve(true);
+          }
+        });
+
+        this.setSlimeState({slime, slimeQueue, slimeOnScreen});
+      } catch (error) {
+        reject(error);
+      }
+    }.bind(this));
+  }
+
   playInstructions() {
     return this.play(this.instructionsSound);
   }
 
-  // nextQuestion() {
-  //   let {value} = this.questions.next();
-  //   this.loadAnswerChoiceButtons(value.answerChoices);
-  //   // await this.addQuestionStem(value.stem);
-  //
-  // }
-
-  // removeSlime(count=1) {
-  //   for (let i = 0; i < count; i++) {
-  //     let slimeKey = this.slimeOnScreen.pop();
-  //     this.slimeQueue.push(slimeKey);
-  //     this.slime[slimeKey]["object"].alpha = 0;
-  //   }
-  // }
-
-  validateAnswerChoice(event) {
-    if(event.target.dataset.value == this.currentAnswer) {
-      console.log("correct!");
-    } else {
-      console.log("wrong!");
-    }
+  playRandomSound(soundList) {
+    let randInt = this.getRandomIntInclusive(0, soundList.length-1);
+    this.play(soundList[randInt]);
   }
 
   addNewAnswerChoices (answerChoicesList) {
     answerChoicesList.forEach((answerChoice, index) => {
       this.buttons[index].textContent = answerChoice;
-      this.buttons[index].dataset = answerChoice;
+      this.buttons[index].dataset.value = answerChoice;
     });
+  }
+
+  addAnswerChoiceResponseSounds() {
+    for(let i=1; i < 6; i++) {
+      this.correctSounds.push(this.game.sound.voice.add(`correct${i}`));
+    }
+
+    for(let i=1; i < 4; i++) {
+      this.wrongSounds.push(this.game.sound.voice.add(`wrong${i}`));
+    }
+
+    for(let i=1; i < 3; i++) {
+      this.solutionsSounds.push(this.game.sound.voice.add(`solution${i}`));
+    }
   }
 
   loadAnswerChoiceButtons(answerChoicesList) {
@@ -97,17 +203,18 @@ export default class GameScene extends BaseScene {
         "data-value": `${answerChoicesList[i]}`
       });
 
-      buttonHtmlBuilder.element.addEventListener("click", this.validateAnswerChoice.bind(this));
+      buttonHtmlBuilder.element.addEventListener("click", this.validateAnswerChoice.bind(this), true);
       buttonElements.push(buttonHtmlBuilder.element);
     }
+
+    this.buttons = buttonElements;
 
     const buttonsContainer = new HTMLElementBuilder("div")
       .addAttributes({class: "question__answer-choices", style: "opacity: 0"});
     buttonsContainer.appendElements(buttonElements);
 
-    this.buttons = buttonsContainer.element;
-
-    this.currentAnswerChoicesElement = this.add.dom(800, 560, buttonsContainer.element);
+    this.buttonsContainerElement = buttonsContainer.element;
+    this.currentAnswerChoicesElement = this.add.dom(800, 560, buttonsContainer.element).setDepth(-1);
   }
 
   addQuestionStem(questionStem) {
@@ -115,23 +222,20 @@ export default class GameScene extends BaseScene {
       let swapQuestionDelay = 300;
       try {
         if (this.currentQuestionStemElement != null) {
-          this.tweens.add({
-            targets: this.currentQuestionStemElement,
-            alpha: { from: 1, to: 0 },
-            duration: swapQuestionDelay
-          });
+          this.currentQuestionStemElement.setAlpha(0);
           this.currentQuestionStemElement.destroy();
         }
 
         let questionElementBuilder = new HTMLElementBuilder("div", questionStem)
           .addAttributes({class: "question__stem"});
+
         this.currentQuestionStemElement = this.add.dom(895, 250, questionElementBuilder.element);
         this.currentQuestionStemElement.setSkew(0, -0.15).setDepth(-1).setAlpha(0);
         this.tweens.add({
           targets: this.currentQuestionStemElement,
           alpha: { from: 0, to: 1 },
           duration: 500,
-          delay: swapQuestionDelay + 100,
+          delay: swapQuestionDelay + 200,
           onComplete: () => {
             resolve(true);
           }
@@ -148,5 +252,15 @@ export default class GameScene extends BaseScene {
     }
 
     return;
+  }
+
+  getRandomIntInclusive(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+  resetCorrectValueOnButtons() {
+    this.buttons.forEach((button) => button.dataset.correct = "");
   }
 }
