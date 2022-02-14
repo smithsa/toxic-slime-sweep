@@ -38,5 +38,175 @@
     12
     ],
     "answer": 12
+  },
+  {
+    "stem": "3 × 5 = _",
+    "answerChoices": [
+    10,
+    8,
+    6,
+    15
+    ],
+    "answer": 15
+  },
+  {
+    "stem": "3 × 6 = _",
+    "answerChoices": [
+      12,
+      9,
+      6,
+      18
+    ],
+    "answer": 18
+  },
+  {
+    "stem": "3 × 7 = _",
+    "answerChoices": [
+      10,
+      21,
+      6,
+      24
+    ],
+    "answer": 21
+  },
+  {
+    "stem": "3 × 8 = _",
+    "answerChoices": [
+      24,
+      11,
+      48,
+      27
+    ],
+    "answer": 24
+  },
+  {
+    "stem": "3 × 9 = _",
+    "answerChoices": [
+      27,
+      32,
+      12,
+      30
+    ],
+    "answer": 27
+  },
+  {
+    "stem": "3 × 10 = _",
+    "answerChoices": [
+      30,
+      37,
+      13,
+      33
+    ],
+    "answer": 30
+  },
+  {
+    "stem": "3 × 11 = _",
+    "answerChoices": [
+      31,
+      14,
+      33,
+      13
+    ],
+    "answer": 33
+  },
+  {
+    "stem": "1 × 3 = _",
+    "answerChoices": [
+      2,
+      1,
+      3,
+      4
+    ],
+    "answer": 3
+  },
+  {
+    "stem": "2 × 3 = _",
+    "answerChoices": [
+      2,
+      5,
+      6,
+      4
+    ],
+    "answer": 6
+  },
+  {
+    "stem": "4 × 3 = _",
+    "answerChoices": [
+      9,
+      5,
+      6,
+      12
+    ],
+    "answer": 12
+  },
+  {
+    "stem": "5 × 3 = _",
+    "answerChoices": [
+      10,
+      8,
+      6,
+      15
+    ],
+    "answer": 15
+  },
+  {
+    "stem": "6 × 3 = _",
+    "answerChoices": [
+      12,
+      9,
+      6,
+      18
+    ],
+    "answer": 18
+  },
+  {
+    "stem": "7 × 3 = _",
+    "answerChoices": [
+      10,
+      21,
+      6,
+      24
+    ],
+    "answer": 21
+  },
+  {
+    "stem": "8 × 3 = _",
+    "answerChoices": [
+      24,
+      11,
+      48,
+      27
+    ],
+    "answer": 24
+  },
+  {
+    "stem": "9 × 3 = _",
+    "answerChoices": [
+      27,
+      32,
+      12,
+      30
+    ],
+    "answer": 27
+  },
+  {
+    "stem": "10 × 3 = _",
+    "answerChoices": [
+      30,
+      37,
+      13,
+      33
+    ],
+    "answer": 30
+  },
+  {
+    "stem": "11 × 3 = _",
+    "answerChoices": [
+      31,
+      14,
+      33,
+      13
+    ],
+    "answer": 33
   }
 ]

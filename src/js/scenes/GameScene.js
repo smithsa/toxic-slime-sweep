@@ -48,7 +48,7 @@ export default class GameScene extends BaseScene {
     const instructionsSoundTimedEvent = this.time.delayedCall(1000, () => {
       this.playInstructions().finally(function () {
         this.loadAnswerChoiceButtons(value.answerChoices);
-        this.add.dom(1380, 105, instructionsButtonHtmlBuilder.element);
+        this.add.dom(1390, 100, instructionsButtonHtmlBuilder.element);
       }.bind(this));
 
       instructionsSoundTimedEvent.destroy();

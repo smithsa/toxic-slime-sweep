@@ -12,12 +12,12 @@ export default class ButtonImage {
   _build() {
     const buttonHtmlBuilder = new HTMLElementBuilder("button");
     buttonHtmlBuilder.addAttributes({
-      "aria-label": this.ariaLabel
+      "aria-label": this.ariaLabel,
+      "class": this.elementClass
     }).appendElements(
       new HTMLElementBuilder("img")
         .addAttributes({
-          "src": this.imageSrc,
-          "class": this.elementClass
+          "src": this.imageSrc
         }).element
     )
 

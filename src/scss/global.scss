@@ -116,18 +116,23 @@ button {
 
 .play__btn {
   cursor: pointer;
-  transition:.1s filter ease-in-out ;
   &:hover {
     filter: hue-rotate(100deg);
   }
 }
 
 .sound__btn {
-  width: 90px;
-  height: auto;
   cursor: pointer;
   opacity: 0;
   animation: fadein 1s forwards;
+  img {
+    width: 90px;
+    height: auto;
+  }
+
+  &:hover {
+    filter: hue-rotate(100deg);
+  }
 }
 
 .shake {
