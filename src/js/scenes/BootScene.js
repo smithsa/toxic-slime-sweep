@@ -26,6 +26,7 @@ export default class BootScene extends BaseScene {
     this.load.audio("complete", "./voice/end_allComplete.mp3");
     this.load.audio("fewLeft", "./voice/end_fewLeft.mp3");
     this.load.audio("takenOver", "./voice/takenOver.mp3");
+    this.load.audio("click", "./sounds/click.mp3");
 
     this.load.path = './img/';
     this.load.image('background', 'bg.jpg');

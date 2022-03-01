@@ -19,8 +19,10 @@ export default class TitleScene extends BaseScene {
     const gameTitle = this.addGameTitle();
     const playButton = this.addPlayButton();
 
+    const clickSound = this.game.sound.sfx.add('click');
     playButton.element.addEventListener("click", async () => {
       const titleSound = this.game.sound.voice.add('title');
+        await this.play(clickSound);
         await this.play(titleSound);
         playButton.gameObject.alpha = 0;
         gameTitle.gameObject.alpha = 0;

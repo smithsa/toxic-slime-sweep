@@ -16,7 +16,6 @@ export default class BaseScene extends Scene {
     this.game.registry.set("slime", slimeConfig.slime);
     this.game.registry.set("slimeQueue", slimeConfig.slimeQueue);
     this.game.registry.set("slimeOnScreen", slimeConfig.slimeOnScreen);
-    console.log("set result:: =>", this.getSlimeState().slimeOnScreen)
   }
 
   getSlimeState() {

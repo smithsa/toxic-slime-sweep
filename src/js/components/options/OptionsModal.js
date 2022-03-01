@@ -5,10 +5,12 @@ export default class OptionsModal extends HTMLElement {
     this.CAPTIONS_KEY = "captionsOn";
     this.VOICE_SOUND_MANAGER_ID = "voice";
     this.MUSIC_SOUND_MANAGER_ID = "music";
+    this.SFX_SOUND_MANAGER_ID = "sfx";
 
     this._captionToggleHandler = this._captionToggleHandler.bind(this);
     this._voiceVolumeChangeHandler = this._voiceVolumeChangeHandler.bind(this);
     this._musicVolumeChangeHandler = this._musicVolumeChangeHandler.bind(this);
+    this._sfxVolumeChangeHandler = this._sfxVolumeChangeHandler.bind(this);
     this._closeClickHandler = this._closeClickHandler.bind(this);
 
     this.attachShadow({mode: "open"});
@@ -26,7 +28,7 @@ export default class OptionsModal extends HTMLElement {
 
          .esg-modal {
             width: 600px;
-            height: 550px;
+            height: 630px;
             font-family: Arial, Helvetica, sans-serif;
             display: flex;
             flex-direction: column;
@@ -108,6 +110,9 @@ export default class OptionsModal extends HTMLElement {
                     <esg-slider id="voice-slider" class="esg-modal__item" label="Voice"></esg-slider>
                   </div>
                   <div class="esg-modal__item">
+                    <esg-slider id="sfx-slider" class="esg-modal__item" label="SFX"></esg-slider>
+                  </div>
+                  <div class="esg-modal__item">
                     <esg-slider id="music-slider" class="esg-modal__item" label="Music"></esg-slider>
                   </div>
               </div>
@@ -119,6 +124,7 @@ export default class OptionsModal extends HTMLElement {
     this.captionsToggleElement = this.shadowRoot.getElementById("captions-toggle");
     this.voiceSliderElement = this.shadowRoot.getElementById("voice-slider");
     this.musicSliderElement = this.shadowRoot.getElementById("music-slider");
+    this.sfxSliderElement = this.shadowRoot.getElementById("sfx-slider");
     this.modalElement = this.shadowRoot.querySelector(".esg-modal");
     this.closeButton = this.modalElement.querySelector(".esg-modal__close");
     this.header = this.modalElement.querySelector("h2");
@@ -145,6 +151,10 @@ export default class OptionsModal extends HTMLElement {
     this._changeSoundManagerVolume(event, this.MUSIC_SOUND_MANAGER_ID);
   }
 
+  _sfxVolumeChangeHandler(event) {
+    this._changeSoundManagerVolume(event, this.SFX_SOUND_MANAGER_ID);
+  }
+
   _closeClickHandler() {
     this.open = this._getOppositeValueOfValueAttr(this.open);
     this.modalElement.setAttribute("aria-hidden", this._getOppositeValueOfValueAttr(this.open));
@@ -158,11 +168,13 @@ export default class OptionsModal extends HTMLElement {
     this.captionsToggleElement.addEventListener("toggle", this._captionToggleHandler);
     this.voiceSliderElement.addEventListener("volumechange", this._voiceVolumeChangeHandler);
     this.musicSliderElement.addEventListener("volumechange", this._musicVolumeChangeHandler);
+    this.sfxSliderElement.addEventListener("volumechange", this._sfxVolumeChangeHandler);
     this.closeButton.addEventListener("click", this._closeClickHandler);
     this.modalElement.setAttribute("aria-hidden",
       this._getOppositeValueOfValueAttr(this.open));
     this.voiceSliderElement.setAttribute("value", window.esparkGame.sound[this.VOICE_SOUND_MANAGER_ID].volume);
     this.musicSliderElement.setAttribute("value", window.esparkGame.sound[this.MUSIC_SOUND_MANAGER_ID].volume);
+    this.sfxSliderElement.setAttribute("value", window.esparkGame.sound[this.SFX_SOUND_MANAGER_ID].volume);
     this.captionsToggleElement.setAttribute("toggle-on", window.esparkGame.registry.get(this.CAPTIONS_KEY));
   }
 
@@ -170,6 +182,7 @@ export default class OptionsModal extends HTMLElement {
     this.captionsToggleElement.removeEventListener("toggle", this._captionToggleHandler);
     this.voiceSliderElement.removeEventListener("volumechange", this._voiceVolumeChangeHandler);
     this.musicSliderElement.removeEventListener("volumechange", this._musicVolumeChangeHandler);
+    this.sfxSliderElement.removeEventListener("volumechange", this._sfxVolumeChangeHandler);
 
   }
 
