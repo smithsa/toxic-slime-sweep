@@ -1,0 +1,90 @@
+{
+  "resources": [
+    "./dist/sounds/sounds_audio_sprite.ogg",
+    "./dist/sounds/sounds_audio_sprite.m4a",
+    "./dist/sounds/sounds_audio_sprite.mp3",
+    "./dist/sounds/sounds_audio_sprite.ac3"
+  ],
+  "spritemap": {
+    "CompletionScreen": {
+      "start": 4,
+      "end": 6.0941496598639455,
+      "loop": false
+    },
+    "bcks": {
+      "start": 16,
+      "end": 22.49142857142857,
+      "loop": false
+    },
+    "dir": {
+      "start": 32,
+      "end": 38.02702947845805,
+      "loop": false
+    },
+    "endat": {
+      "start": 43,
+      "end": 44.812607709750566,
+      "loop": false
+    },
+    "endit": {
+      "start": 49,
+      "end": 50.46721088435374,
+      "loop": false
+    },
+    "idle": {
+      "start": 56,
+      "end": 58.57596371882086,
+      "loop": false
+    },
+    "inst": {
+      "start": 71,
+      "end": 80.74512471655329,
+      "loop": false
+    },
+    "instr2": {
+      "start": 92,
+      "end": 100.05006802721088,
+      "loop": false
+    },
+    "intro": {
+      "start": 107,
+      "end": 110.5221768707483,
+      "loop": false
+    },
+    "praise1": {
+      "start": 114,
+      "end": 114.8518820861678,
+      "loop": false
+    },
+    "praise2": {
+      "start": 118,
+      "end": 118.91283446712018,
+      "loop": false
+    },
+    "praise3": {
+      "start": 122,
+      "end": 122.96798185941043,
+      "loop": false
+    },
+    "praise4": {
+      "start": 126,
+      "end": 126.66321995464853,
+      "loop": false
+    },
+    "right": {
+      "start": 131,
+      "end": 132.5804081632653,
+      "loop": false
+    },
+    "splash": {
+      "start": 138,
+      "end": 140.21895691609978,
+      "loop": false
+    },
+    "wrong": {
+      "start": 146,
+      "end": 148.6702947845805,
+      "loop": false
+    }
+  }
+}

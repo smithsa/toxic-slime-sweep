@@ -71,6 +71,7 @@ export default class IntroductionScene extends BaseScene {
           slime[slimeKey]["y"],
           "slime", `${slimeKey}.png`);
 
+      slimeSprite.slimeKey = slimeKey;
       slime[slimeKey]["object"] = slimeSprite;
 
       slimeSprite.setAlpha(0);

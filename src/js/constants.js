@@ -10,6 +10,7 @@ export const CONST = {
   CONTENT : {
     TITLE: "Toxic Slime Sweep"
   },
+  QUESTION_COUNT: 10,
   OPTIONS : {
     COLOR: "#0f4863",
     MODAL_POS: {

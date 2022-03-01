@@ -21,22 +21,33 @@ export default class GameScene extends BaseScene {
     this.instructionsSound = null;
     this.currentAnswer = null;
     this.currentQuestionAttempts = 0;
+    this.questionAnsweredCorrectly = false;
     this.maxAttempts = 2;
+    this.winningSound = null;
+    this.losingSound = null;
+    this.fewSLimeLeft = null;
+    this.isGameEnded = false;
   }
 
   preload() {
+    this.winningSound = this.game.sound.voice.add('complete');
+    this.losingSound = this.game.sound.voice.add('takenOver');
+    this.instructionsSound = this.game.sound.voice.add('instructions');
+    this.fewSLimeLeft = this.game.sound.voice.add('fewLeft');
+    this.addEventHandlersToSlime();
   }
 
   async create() {
-    // TODO only take 10 from the bank
+    // sort and get the first 10 questions
     this.questionBank.sort(() => {
       return 0.5 - Math.random()
     });
 
+    this.questionBank = this.questionBank.splice(0, CONST.QUESTION_COUNT);
+
     const instructionsButtonHtmlBuilder = new ButtonImage("Replay Instructions", "./img/btn_sound.png", "sound__btn");
     instructionsButtonHtmlBuilder.element.addEventListener("click", this.playInstructions.bind(this));
 
-    this.instructionsSound = this.game.sound.voice.add('instructions');
     this.instructionsSound.addMarker({name: "instruct_look", start: 0, duration: 2.5});
     this.instructionsSound.addMarker({name: "instruct_answer_quickly", start: 2.6, duration: 3});
     this.loadAnswerChoiceResponseSounds();
@@ -60,6 +71,8 @@ export default class GameScene extends BaseScene {
     const nextQuestionTimedEvent = this.time.delayedCall(delay, function() {
       this.nextQuestion();
       nextQuestionTimedEvent.destroy();
+      this.currentQuestionAttempts = 0;
+      this.questionAnsweredCorrectly = false;
     }, [], this);
   }
 
@@ -67,7 +80,9 @@ export default class GameScene extends BaseScene {
     this.resetCorrectAttributeValueOnButtons();
     let {value, done} = this.questions.next();
     if(done) {
+      this.isGameEnded = true;
       console.warn("No more questions exist to continue");
+      this.endGameInLosingState();
       return;
     }
 
@@ -76,40 +91,126 @@ export default class GameScene extends BaseScene {
     await this.addQuestionStem(value.stem);
   }
 
+  // TODO WRONG AND RIGHT NEED TO BE FIXED
   async validateAnswerChoice(event) {
+    this.currentQuestionAttempts++;
+
+    if(this.currentQuestionAttempts > 2 || this.questionAnsweredCorrectly) {
+      event.preventDefault();
+      return;
+    }
+
     this.resetCorrectAttributeValueOnButtons();
 
     if(event.target.dataset.value == this.currentAnswer) {
+      this.questionAnsweredCorrectly = true;
       event.target.dataset.correct = true;
-      this.currentQuestionAttempts = 0;
-      this.playRandomSound(this.correctSounds);
+      // this.currentQuestionAttempts = 0;
       await this.removeSlime();
+      let winState = this.checkForWinningGameState();
       this.delayedNextQuestion(2000);
+      await this.playRandomSound(this.correctSounds);
     } else {
       this.shakeAnswerChoices();
-
       event.target.dataset.correct = false;
 
-      if(this.currentQuestionAttempts === (this.maxAttempts - 1)) {
-        this.currentQuestionAttempts = 0;
+      if(this.currentQuestionAttempts === this.maxAttempts) {
+        // this.currentQuestionAttempts = 0;
         this.playRandomSound(this.solutionsSounds);
         this.revealCorrectAnswer();
-        this.delayedNextQuestion(3000);
+        this.startLosingGameStateIfEligible().then(function(isLosingGame){
+          if(!isLosingGame) {
+            this.delayedNextQuestion(3000);
+          }
+        }.bind(this));
+
         return;
       };
 
-      this.currentQuestionAttempts++;
+
       await this.playRandomSound(this.wrongSounds);
       await this.addSlime();
-      this.resetCorrectAttributeValueOnButtons();
+      // this.resetCorrectAttributeValueOnButtons();
     }
   }
 
+  async checkForWinningGameState() {
+    let {slimeOnScreen} = this.getSlimeState();
+    if(slimeOnScreen.length === 0) {
+      await this.play(this.winningSound);
+      this.hideQuestionStemAndAnswerChoices();
+      return true;
+    }
+
+    return false;
+  }
+
+  async startLosingGameStateIfEligible() {
+    let {slime, slimeOnScreen} = this.getSlimeState();
+    if (slimeOnScreen.length === 10) {
+      this.hideQuestionStemAndAnswerChoices();
+      for(let slimeKey in slime) {
+        slime[slimeKey]["object"].setInteractive();
+      }
+      await this.play(this.losingSound);
+      return true;
+    }
+
+    return false;
+  }
+
+  endGameInLosingState() {
+    let {slime, slimeOnScreen} = this.getSlimeState();
+    this.hideQuestionStemAndAnswerChoices();
+    this.play(this.fewSLimeLeft);
+    for(let slimeKey in slime) {
+      slime[slimeKey]["object"].setInteractive();
+    }
+  }
+
+  returnBackToGameFromLosingState() {
+    this.delayedNextQuestion(0);
+    let {slime} = this.getSlimeState();
+    for(let slimeKey in slime) {
+      slime[slimeKey]["object"].disableInteractive();
+    }
+    this.showQuestionStemAndAnswerChoices();
+    this.play(this.fewSLimeLeft);
+  }
+
+  addEventHandlersToSlime() {
+    let {slime} = this.getSlimeState();
+
+    for(let slimeKey in slime) {
+      slime[slimeKey]["object"].on("pointerdown", function() {
+        let {slimeOnScreen} = this.getSlimeState();
+
+        if(!this.isGameEnded && slimeOnScreen.length <= 7) {
+          this.returnBackToGameFromLosingState();
+          return;
+        }
+
+        if(this.isGameEnded && slimeOnScreen.length === 1) {
+          // TODO end the game here and show the replay button
+          this.play(this.winningSound);
+        }
+
+        this.removeSlimeByKey(slimeKey);
+      }.bind(this));
+    }
+  }
+
+  // TODO PUT GUARDS ON POPPING
   addSlime() {
     return new Promise(function(resolve, reject) {
       try {
         let {slime, slimeQueue, slimeOnScreen} = this.getSlimeState();
         let slimeKey = slimeQueue.pop();
+
+        if(slimeKey == null) {
+          console.warn("Slime Key is Null");
+        }
+
         slimeOnScreen.push(slimeKey);
         const slimeToAdd = slime[slimeKey]["object"];
 
@@ -133,11 +234,22 @@ export default class GameScene extends BaseScene {
     }.bind(this));
   }
 
-  removeSlime() {
+  async removeSlime() {
+    let {slime, slimeQueue, slimeOnScreen} = this.getSlimeState();
+    let slimeKey = slimeOnScreen[slimeOnScreen.length - 1];
+
+    if(slimeKey == null) {
+      console.warn("Slime Key is Null");
+    }
+    await this.removeSlimeByKey(slimeKey);
+  }
+
+  removeSlimeByKey(slimeKey) {
     return new Promise(function(resolve, reject) {
       try {
         let {slime, slimeQueue, slimeOnScreen} = this.getSlimeState();
-        let slimeKey = slimeOnScreen.pop();
+        let indexAt = slimeOnScreen.indexOf(slimeKey);
+        slimeOnScreen.splice(indexAt, 1);
         slimeQueue.push(slimeKey);
         const slimeToRemove = slime[slimeKey]["object"];
 
@@ -247,6 +359,15 @@ export default class GameScene extends BaseScene {
     }).bind(this));
   }
 
+  hideQuestionStemAndAnswerChoices() {
+    this.currentQuestionStemElement.setVisible(false);
+    this.buttonsContainerElement.style.visibility = "hidden";
+  }
+
+  showQuestionStemAndAnswerChoices() {
+    this.currentQuestionStemElement.setVisible(true);
+    this.buttonsContainerElement.style.visibility = "visible";
+  }
   * questionsGenerator() {
     for(let question in this.questionBank) {
       yield this.questionBank[question];
