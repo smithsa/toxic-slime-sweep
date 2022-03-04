@@ -7181,10 +7181,10 @@ pend@~1.2.0:
   resolved "https://registry.yarnpkg.com/pend/-/pend-1.2.0.tgz#7a57eb550a6783f9115331fcf4663d5c8e007a50"
   integrity sha1-elfrVQpng/kRUzH89GY9XI4AelA=
 
-phaser3-plugin-sound-a11y@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/phaser3-plugin-sound-a11y/-/phaser3-plugin-sound-a11y-2.0.1.tgz#6ac98297de948681501628beda5167761e75b8cf"
-  integrity sha512-MkcYjEpCmgs4YINClsKcy4v5RE+69SpnodNdlyDhkTu9zqxFAEhdvZjGtZiPw+U/WK6uSlRqA7OX2n3vdOzC1w==
+phaser3-plugin-sound-a11y@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/phaser3-plugin-sound-a11y/-/phaser3-plugin-sound-a11y-3.0.2.tgz#ba0d5cf1bf7b5cc4d144ad5992b3eccc38b1c396"
+  integrity sha512-0BOY9n01BIzcWq+LjjAcJNKvg7fZsn1kNDxoLsKgnrIFZcrw6IKQDhpXogaa8qbaHpDgRwy/Isc/R75Yynt11w==
 
 phaser@^3.55.2:
   version "3.55.2"

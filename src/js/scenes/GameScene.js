@@ -30,10 +30,10 @@ export default class GameScene extends BaseScene {
   }
 
   preload() {
-    this.winningSound = this.SoundA11yPluginPlugin.add('voice', 'complete');
-    this.losingSound = this.SoundA11yPluginPlugin.add('voice', 'takenOver');
-    this.instructionsSound = this.SoundA11yPluginPlugin.add('voice', 'instructions');
-    this.fewSLimeLeft = this.SoundA11yPluginPlugin.add('voice', 'fewLeft');
+    this.winningSound = this.SoundA11yPlugin.add('voice', 'complete');
+    this.losingSound = this.SoundA11yPlugin.add('voice', 'takenOver');
+    this.instructionsSound = this.SoundA11yPlugin.add('voice', 'instructions');
+    this.fewSLimeLeft = this.SoundA11yPlugin.add('voice', 'fewLeft');
     this.addEventHandlersToSlime();
   }
 

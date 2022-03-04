@@ -2,7 +2,7 @@ import {CONST} from "../constants";
 import HTMLElementBuilder from "../utils/HTMLElementBuilder";
 import BaseScene from "./BaseScene";
 import ButtonImage from "../components/ButtonImage";
-import captions from '../../data/captions.json';
+import captions from "../../data/captions.json";
 
 export default class TitleScene extends BaseScene {
   constructor() {
@@ -20,7 +20,6 @@ export default class TitleScene extends BaseScene {
     const gameTitle = this.addGameTitle();
     const playButton = this.addPlayButton();
 
-    // debugger
     const clickSound = this.SoundA11yPlugin.add('sfx', 'click');
     playButton.element.addEventListener("click", async () => {
         const titleSound = this.SoundA11yPlugin.add('voice', 'title');
