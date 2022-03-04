@@ -30,10 +30,10 @@ export default class GameScene extends BaseScene {
   }
 
   preload() {
-    this.winningSound = this.game.sound.voice.add('complete');
-    this.losingSound = this.game.sound.voice.add('takenOver');
-    this.instructionsSound = this.game.sound.voice.add('instructions');
-    this.fewSLimeLeft = this.game.sound.voice.add('fewLeft');
+    this.winningSound = this.SoundA11yPluginPlugin.add('voice', 'complete');
+    this.losingSound = this.SoundA11yPluginPlugin.add('voice', 'takenOver');
+    this.instructionsSound = this.SoundA11yPluginPlugin.add('voice', 'instructions');
+    this.fewSLimeLeft = this.SoundA11yPluginPlugin.add('voice', 'fewLeft');
     this.addEventHandlersToSlime();
   }
 
@@ -137,7 +137,7 @@ export default class GameScene extends BaseScene {
   async checkForWinningGameState() {
     let {slimeOnScreen} = this.getSlimeState();
     if(slimeOnScreen.length === 0) {
-      await this.play(this.winningSound);
+      await this.SoundA11yPlugin.play(this.winningSound);
       this.hideQuestionStemAndAnswerChoices();
       return true;
     }
@@ -152,7 +152,7 @@ export default class GameScene extends BaseScene {
       for(let slimeKey in slime) {
         slime[slimeKey]["object"].setInteractive();
       }
-      await this.play(this.losingSound);
+      await this.SoundA11yPlugin.play(this.losingSound);
       return true;
     }
 
@@ -162,7 +162,7 @@ export default class GameScene extends BaseScene {
   endGameInLosingState() {
     let {slime, slimeOnScreen} = this.getSlimeState();
     this.hideQuestionStemAndAnswerChoices();
-    this.play(this.fewSLimeLeft);
+    this.SoundA11yPlugin.play(this.fewSLimeLeft);
     for(let slimeKey in slime) {
       slime[slimeKey]["object"].setInteractive();
     }
@@ -175,7 +175,7 @@ export default class GameScene extends BaseScene {
       slime[slimeKey]["object"].disableInteractive();
     }
     this.showQuestionStemAndAnswerChoices();
-    this.play(this.fewSLimeLeft);
+    this.SoundA11yPlugin.play(this.fewSLimeLeft);
   }
 
   addEventHandlersToSlime() {
@@ -192,7 +192,7 @@ export default class GameScene extends BaseScene {
 
         if(this.isGameEnded && slimeOnScreen.length === 1) {
           // TODO end the game here and show the replay button
-          this.play(this.winningSound);
+          this.SoundA11yPlugin.play(this.winningSound);
         }
 
         this.removeSlimeByKey(slimeKey);
@@ -274,12 +274,12 @@ export default class GameScene extends BaseScene {
   }
 
   playInstructions() {
-    return this.play(this.instructionsSound);
+    return this.SoundA11yPlugin.play(this.instructionsSound);
   }
 
   playRandomSound(soundList) {
     let randInt = this.getRandomIntInclusive(0, soundList.length-1);
-    this.play(soundList[randInt]);
+    this.SoundA11yPlugin.play(soundList[randInt]);
   }
 
   addNewAnswerChoices (answerChoicesList) {
@@ -291,15 +291,15 @@ export default class GameScene extends BaseScene {
 
   loadAnswerChoiceResponseSounds() {
     for(let i=1; i < 6; i++) {
-      this.correctSounds.push(this.game.sound.voice.add(`correct${i}`));
+      this.correctSounds.push(this.SoundA11yPlugin.add('voice', `correct${i}`));
     }
 
     for(let i=1; i < 4; i++) {
-      this.wrongSounds.push(this.game.sound.voice.add(`wrong${i}`));
+      this.wrongSounds.push(this.SoundA11yPlugin.add('voice', `wrong${i}`));
     }
 
     for(let i=1; i < 3; i++) {
-      this.solutionsSounds.push(this.game.sound.voice.add(`solution${i}`));
+      this.solutionsSounds.push(this.SoundA11yPlugin.add('voice', `solution${i}`));
     }
   }
 

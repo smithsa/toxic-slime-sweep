@@ -1,11 +1,11 @@
 import {CANVAS, Scale, Sound, Game} from 'phaser';
+import SoundA11yPlugin from "phaser3-plugin-sound-a11y";
 import slimeCoordinates from "../data/slime_coordinates.json";
 import IntroductionScene from "./scenes/IntroductionScene";
 import BootScene from './scenes/BootScene';
 import TitleScene from './scenes/TitleScene';
 import GameScene from "./scenes/GameScene";
 import {CONST} from "./constants";
-import './components/register';
 
 const gameConfig = {
   type: CANVAS,
@@ -28,6 +28,15 @@ const gameConfig = {
       game.sound.sfx = Sound.SoundManagerCreator.create(game),
       game.sound.music = Sound.SoundManagerCreator.create(game)
     }
+  },
+  plugins: {
+    scene: [
+      { key: 'SoundA11yPlugin',
+        plugin: SoundA11yPlugin,
+        start: true,
+        mapping: 'SoundA11yPlugin'
+      }
+    ]
   }
 };
 

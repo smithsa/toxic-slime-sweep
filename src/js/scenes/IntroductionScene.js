@@ -21,7 +21,7 @@ export default class IntroductionScene extends BaseScene {
     const beaker2 = this.add.image(575,630, "beaker", "beaker2.png");
     const beaker3 = this.add.image(290,645, "beaker", "beaker3.png");
 
-    const introductionSound = this.game.sound.voice.add('intro');
+    const introductionSound = this.SoundA11yPlugin.add('voice', 'intro');
     introductionSound.addMarker({name: "intro_start", start: 0, duration: 3});
     introductionSound.addMarker({name: "intro_beakers_exploded", start: 3, duration: 2});
     introductionSound.addMarker({name: "intro_slime_everywhere", start: 5, duration: 2.9});
@@ -37,7 +37,7 @@ export default class IntroductionScene extends BaseScene {
     this.setOffAlarm();
 
     const introSoundTimedEvent = this.time.delayedCall(500, () => {
-      this.play(introductionSound).finally(() => {
+      this.SoundA11yPlugin.play(introductionSound).finally(() => {
         this.scene.launch(CONST.SCENES.GAME);
       });
 

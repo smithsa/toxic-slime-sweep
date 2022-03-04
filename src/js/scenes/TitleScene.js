@@ -2,6 +2,7 @@ import {CONST} from "../constants";
 import HTMLElementBuilder from "../utils/HTMLElementBuilder";
 import BaseScene from "./BaseScene";
 import ButtonImage from "../components/ButtonImage";
+import captions from '../../data/captions.json';
 
 export default class TitleScene extends BaseScene {
   constructor() {
@@ -11,7 +12,7 @@ export default class TitleScene extends BaseScene {
   }
 
   preload() {
-
+    this.SoundA11yPlugin.init({captions});
   }
 
   async create() {
@@ -19,11 +20,12 @@ export default class TitleScene extends BaseScene {
     const gameTitle = this.addGameTitle();
     const playButton = this.addPlayButton();
 
-    const clickSound = this.game.sound.sfx.add('click');
+    // debugger
+    const clickSound = this.SoundA11yPlugin.add('sfx', 'click');
     playButton.element.addEventListener("click", async () => {
-      const titleSound = this.game.sound.voice.add('title');
-        await this.play(clickSound);
-        await this.play(titleSound);
+        const titleSound = this.SoundA11yPlugin.add('voice', 'title');
+        await this.SoundA11yPlugin.play(clickSound);
+        await this.SoundA11yPlugin.play(titleSound);
         playButton.gameObject.alpha = 0;
         gameTitle.gameObject.alpha = 0;
         this.scene.launch(CONST.SCENES.INTRODUCTION);
@@ -32,8 +34,6 @@ export default class TitleScene extends BaseScene {
     this.addFloatingSlimeToSmallRectangularTank();
     this.addFloatingSlimeToLargeRectangularTank();
     this.addFloatingSlimeToCylindricalTank();
-
-    this.addOptionsSettings();
   }
 
   addGameTitle () {
